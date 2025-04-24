@@ -12,4 +12,28 @@ public class Product {
         this.price = price;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getProductID() {
+        return productID;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
 }
