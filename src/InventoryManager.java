@@ -17,4 +17,13 @@ public class InventoryManager {
             System.out.println(product);
         }
     }
+
+    public Product findProductById(String id) {
+        for (Product product : products) {
+            if (product.getProductID().equals(id)) {
+                return product;
+            }
+        }
+        return null;
+    }
 }
