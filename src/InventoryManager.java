@@ -11,4 +11,10 @@ public class InventoryManager {
     public void addProduct(Product product) {
         this.products.add(product);
     }
+
+    public void listProducts() {
+        for (Product product : products) {
+            System.out.println(product);
+        }
+    }
 }
