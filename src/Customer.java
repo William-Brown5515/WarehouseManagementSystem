@@ -12,6 +12,7 @@ public class Customer {
         this.phone = phone;
     }
 
+    // Getter and setters for the object
     public String getName() { return name; }
 
     public String getCustomerId() { return customerId; }
@@ -26,6 +27,7 @@ public class Customer {
 
     public void setPhone(String phone) { this.phone = phone; }
 
+    // Overrides the default toString() method to provide readable summary of customer details
     @Override
     public String toString() {
         return "Customer ID: " + customerId + ", Name: " + name + ", Email: " + email + ", Phone: " + phone;
