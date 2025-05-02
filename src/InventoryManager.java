@@ -36,4 +36,14 @@ public class InventoryManager {
         }
         return false;
     }
+
+    public boolean addStock(String productID, int quantity) {
+        Product product = findProductById(productID);
+        if (product != null) {
+            product.setQuantity(product.getQuantity() + quantity);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
