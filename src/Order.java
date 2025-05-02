@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Order {
 
+    // Initialise class attributes
     private String orderID;
     private List<OrderedProduct> orderedProducts;
     private double totalPrice;
@@ -13,6 +14,7 @@ public class Order {
     private boolean payment;
     private boolean delivered;
 
+    // Constructor
     public Order(Customer customer) {
         this.orderedProducts = new ArrayList<OrderedProduct>();
         this.orderID = ""; // Something random here
@@ -24,6 +26,7 @@ public class Order {
         this.delivered = false;
     }
 
+    // Class getters
     public double getTotalPrice() { return totalPrice; }
     public LocalDate getOrderDate() { return orderDate; }
     public Customer getCustomer() { return customer; }
@@ -32,17 +35,11 @@ public class Order {
     public boolean isPayment() { return payment; }
     public boolean isDelivered() { return delivered; }
 
+    // Class setters
     public void updateTotalPrice(double price) { this.totalPrice += price; }
     public void updateOrderDate(LocalDate orderDate) { this.orderDate = orderDate; }
     public void updateOrderStatus(String orderStatus) { this.orderStatus = orderStatus; }
     public void updatePayment(boolean payment) { this.payment = payment; }
     public void updateDelivered(boolean delivered) { this.delivered = delivered; }
-
-//    // Overrides the default toString() method to provide readable summary of customer details
-//    @Override
-//    public String toString() {
-//        return "Customer ID: " + customerId + ", Name: " + name + ", Email: " + email + ", Phone: " + phone;
-//    }
-
 
 }

@@ -7,42 +7,52 @@ public class OrderManager {
         this.inventory = inventory;
     }
 
-    public boolean addItem( String ProductID) {
+    public boolean addItem( String ProductID, int Quantity ) {
 
+        // Check whether the product exists
         Product product = inventory.findProductById(ProductID);
 
         if (product != null) {
 
+            // Iterate through the products to check if the product has already been added to basket
             for (OrderedProduct orderedProduct : order.getOrderedProducts()) {
                 if (orderedProduct.getProduct().getProductID().equals(ProductID)) {
-                    orderedProduct.setQuantity(orderedProduct.getQuantity() + 1);
-                    order.updateTotalPrice(order.getTotalPrice() + product.getPrice());
+                    // Update the ordered quantity and total price
+                    orderedProduct.setQuantity(orderedProduct.getQuantity() + Quantity);
+                    order.updateTotalPrice(order.getTotalPrice() + (product.getPrice() * Quantity));
                     return true;
                 }
             }
 
-            OrderedProduct orderedProduct = new OrderedProduct(product, 1);
+            // Create a new orderedProduct object, update total price
+            OrderedProduct orderedProduct = new OrderedProduct(product, Quantity);
             order.getOrderedProducts().add(orderedProduct);
-            order.updateTotalPrice(order.getTotalPrice() + product.getPrice());
+            order.updateTotalPrice(order.getTotalPrice() + (product.getPrice() * Quantity));
             return true;
         }
         return false;
     }
 
-    public boolean removeItem( String ProductID) {
+    public boolean removeItem( String ProductID, Integer Quantity ) {
+
+        // Check whether the product exists
         Product product = inventory.findProductById(ProductID);
 
         if (product != null) {
+
+            // Iterate through the products to check if the product has already been added to basket
             for (OrderedProduct orderedProduct : order.getOrderedProducts()) {
                 if (orderedProduct.getProduct().getProductID().equals(ProductID)) {
-                    if (orderedProduct.getQuantity() == 1) {
+                    if (orderedProduct.getQuantity() <= Quantity) {
+                        // Update the ordered quantity and total price
                         order.getOrderedProducts().remove(orderedProduct);
-                        order.updateTotalPrice(order.getTotalPrice() - product.getPrice());
+                        order.updateTotalPrice(order.getTotalPrice() - (product.getPrice() * Quantity));
                     } else {
-                        orderedProduct.setQuantity(orderedProduct.getQuantity() - 1);
-                        order.updateTotalPrice(order.getTotalPrice() - product.getPrice());
+                        // Update the ordered quantity and total price
+                        orderedProduct.setQuantity(orderedProduct.getQuantity() - Quantity);
+                        order.updateTotalPrice(order.getTotalPrice() - (product.getPrice() * Quantity));
                     }
-                    order.updateTotalPrice(order.getTotalPrice() + product.getPrice());
+                    order.updateTotalPrice(order.getTotalPrice() + (product.getPrice() * Quantity));
                     return true;
                 }
             }
@@ -50,11 +60,13 @@ public class OrderManager {
         return false;
     }
 
+    // A method to run when a payment has been made
     public void payOrder() {
         order.updatePayment(true);
         order.updateOrderStatus("Paid, being Delivered");
     }
 
+    // A method to run whe the order is delivered
     public void deliverOrder() {
         order.updateDelivered(true);
         order.updateOrderStatus("Delivered");
