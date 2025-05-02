@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class OrderManager {
     private Order order;
     private InventoryManager inventory;
@@ -61,12 +63,17 @@ public class OrderManager {
     }
 
     // A method to run when a payment has been made
-    public void payOrder() {
+    public void completeOrder() {
+        // Cycle through the ordered products and adjust the stock accordingly
+        for (OrderedProduct orderedProduct : order.getOrderedProducts()) {
+            inventory.reduceStock(orderedProduct.getProduct().getProductID(), orderedProduct.getQuantity());
+        }
         order.updatePayment(true);
         order.updateOrderStatus("Paid, being Delivered");
+        order.updateOrderDate(LocalDate.ofEpochDay(System.currentTimeMillis()));
     }
 
-    // A method to run whe the order is delivered
+    // A method to run when the order is delivered
     public void deliverOrder() {
         order.updateDelivered(true);
         order.updateOrderStatus("Delivered");
