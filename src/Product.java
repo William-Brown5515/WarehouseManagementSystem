@@ -12,6 +12,7 @@ public class Product {
         this.price = price;
     }
 
+    // Getter and setters for the object
     public String getName() {
         return name;
     }
