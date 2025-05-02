@@ -76,4 +76,11 @@ public class InventoryManager {
             }
         }
     }
+
+    public void reduceStock(String productID, int quantity) {
+        Product product = findProductById(productID);
+        if (product != null) {
+            product.setQuantity(product.getQuantity() - quantity);
+        }
+    }
 }
