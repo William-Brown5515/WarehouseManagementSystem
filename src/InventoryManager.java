@@ -46,4 +46,19 @@ public class InventoryManager {
             return false;
         }
     }
+
+    public void lowStock() {
+        ArrayList<Product> items = new ArrayList<Product>();
+        for (Product product : products) {
+            if (product.getQuantity() <= 10) {
+                items.add(product);
+            }
+        }
+        if (!items.isEmpty()) {
+            System.out.println("These are the items with low stock:");
+            for (Product product : items) {
+                System.out.println ("Name: " + product.getName() + "    Quantity: " + product.getQuantity());
+            }
+        }
+    }
 }
