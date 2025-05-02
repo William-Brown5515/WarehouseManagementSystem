@@ -26,4 +26,14 @@ public class InventoryManager {
         }
         return null;
     }
+
+    public boolean removeProductById(String id) {
+        for (Product product : products) {
+            if (product.getProductID().equals(id)) {
+                products.remove(product);
+                return true;
+            }
+        }
+        return false;
+    }
 }
