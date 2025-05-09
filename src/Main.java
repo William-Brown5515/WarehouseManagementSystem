@@ -10,6 +10,5 @@ public class Main {
         TestData.businessOrders(supplierManager, report, inventory);
         TestData.customerOrders(customerManager, report, inventory);
         report.printReport();
-        inventory.listProducts();
     }
 }

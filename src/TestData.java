@@ -412,60 +412,47 @@ public class TestData {
 
     public static void businessOrders(SupplierManager supplierManager, FinancialReport report, InventoryManager inventory) {
         System.out.println("WITHIN BUSINESS ORDERS");
-        // Create a business order for Supplier 1
-        Supplier supplier1 = supplierManager.getSupplier("ID-745");
-        BusinessOrder businessOrder1 = new BusinessOrder(supplier1, "BUSINESS-ORD001", report, inventory);
 
-        // Add items to the business order
-        businessOrder1.addItem("PROD123", 100);  // 100 Cordless Drills
-        businessOrder1.addItem("PROD124", 200);  // 200 Hammers
-        businessOrder1.addItem("PROD128", 150);  // 150 Safety Gloves
-        businessOrder1.addItem("PROD142", 100);  // 100 Backhoe Loaders
+        // Business order data: { supplierId, orderId, { { productId, quantity }, ... } }
+        Object[][] businessOrderData = {
+                { "ID-745", "BUSINESS-ORD001", new Object[][] {
+                        { "PROD123", 100 }, { "PROD124", 200 }, { "PROD128", 150 }, { "PROD142", 100 }
+                }},
+                { "ID-324", "BUSINESS-ORD002", new Object[][] {
+                        { "PROD137", 500 }, { "PROD130", 200 }
+                }},
+                { "ID-567", "BUSINESS-ORD003", new Object[][] {
+                        { "PROD136", 100 }, { "PROD139", 60 }, { "PROD127", 150 }
+                }},
+                { "ID-890", "BUSINESS-ORD004", new Object[][] {
+                        { "PROD141", 50 }, { "PROD133", 200 }
+                }},
+                { "ID-101", "BUSINESS-ORD005", new Object[][] {
+                        { "PROD140", 60 }, { "PROD125", 100 }, { "PROD132", 200 }
+                }},
+                { "ID-745", "BUSINESS-ORD006", new Object[][] {
+                        { "PROD138", 100 }, { "PROD129", 50 }
+                }}
+        };
 
-        // Create another business order for Supplier 2
-        Supplier supplier2 = supplierManager.getSupplier("ID-324");
-        BusinessOrder businessOrder2 = new BusinessOrder(supplier2, "BUSINESS-ORD002", report, inventory);
+        // Create all business orders
+        for (Object[] data : businessOrderData) {
+            String supplierId = (String) data[0];
+            String orderId = (String) data[1];
+            Object[][] items = (Object[][]) data[2];
 
-        // Add items to the business order
-        businessOrder2.addItem("PROD137", 500);  // 500 Bags of Gravel
-        businessOrder2.addItem("PROD130", 200);  // 200 Ear Protection
-
-        // Create another business order for Supplier 3
-        Supplier supplier3 = supplierManager.getSupplier("ID-567");
-        BusinessOrder businessOrder3 = new BusinessOrder(supplier3, "BUSINESS-ORD003", report, inventory);
-
-        // Add items to the business order
-        businessOrder3.addItem("PROD136", 100);  // 100 Bricks
-        businessOrder3.addItem("PROD139", 60);   // 60 Forklifts
-        businessOrder3.addItem("PROD127", 150);  // 150 Angle Grinders
-
-        // Create another business order for Supplier 4
-        Supplier supplier4 = supplierManager.getSupplier("ID-890");
-        BusinessOrder businessOrder4 = new BusinessOrder(supplier4, "BUSINESS-ORD004", report, inventory);
-
-        // Add items to the business order
-        businessOrder4.addItem("PROD141", 50);   // 50 Cranes
-        businessOrder4.addItem("PROD133", 200);  // 200 Bags of Cement
-
-        // Create another business order for Supplier 5
-        Supplier supplier5 = supplierManager.getSupplier("ID-101");
-        BusinessOrder businessOrder5 = new BusinessOrder(supplier5, "BUSINESS-ORD005", report, inventory);
-
-        // Add items to the business order
-        businessOrder5.addItem("PROD140", 100);  // 100 Bulldozers
-        businessOrder5.addItem("PROD125", 100); // 100 Screwdriver Sets
-        businessOrder5.addItem("PROD132", 200); // 200 Respirator Masks
-
-        BusinessOrder businessOrder6 = new BusinessOrder(supplier1, "BUSINESS-ORD006", report, inventory);
-        businessOrder6.addItem("PROD138", 100); // 100 Excavators
-        businessOrder6.addItem("PROD129", 50);   // 50 Safety Glasses
-
-        // List of orders
-        List<BusinessOrder> businessOrders = Arrays.asList(businessOrder1, businessOrder2, businessOrder3, businessOrder4, businessOrder5, businessOrder6);
-
-        for (BusinessOrder businessOrder : businessOrders) {
-            businessOrder.completeOrder();
-            businessOrder.deliverOrder();
+            createBusinessOrder(supplierManager.getSupplier(supplierId), orderId, items, report, inventory);
         }
+    }
+
+    // Helper method to reduce repetition
+    private static BusinessOrder createBusinessOrder(Supplier supplier, String orderId, Object[][] items, FinancialReport report, InventoryManager inventory) {
+        BusinessOrder order = new BusinessOrder(supplier, orderId, report, inventory);
+        for (Object[] item : items) {
+            order.addItem((String) item[0], (int) item[1]);
+        }
+        order.completeOrder();
+        order.deliverOrder();
+        return order;
     }
 }
