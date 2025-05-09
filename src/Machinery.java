@@ -6,8 +6,8 @@ public class Machinery extends Product {
     private String manufacturer;
     private final int warrantyPeriod;
 
-    public Machinery(String name, String productID, int quantity, double customerPrice, double supplierPrice, String enginePower, String operatingVoltage, String machineType, String manufacturer, int warrantyPeriod) {
-        super(name, productID, quantity, customerPrice, supplierPrice);
+    public Machinery(String name, String productID, int quantity, double customerPrice, double supplierPrice, String enginePower, String operatingVoltage, String machineType, String manufacturer, int warrantyPeriod, Supplier supplier) {
+        super(name, productID, quantity, customerPrice, supplierPrice, supplier);
         this.enginePower = enginePower;
         this.operatingVoltage = operatingVoltage;
         this.machineType = machineType;

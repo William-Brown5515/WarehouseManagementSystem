@@ -5,8 +5,8 @@ public class SafetyEquipment extends Product {
     private String size;
     private boolean isReusable;
 
-    public SafetyEquipment(String name, String productID, int quantity, double customerPrice, double supplierPrice, String safetyRating, String material, String size, boolean isReusable) {
-        super(name, productID, quantity, customerPrice, supplierPrice);
+    public SafetyEquipment(String name, String productID, int quantity, double customerPrice, double supplierPrice, String safetyRating, String material, String size, boolean isReusable, Supplier supplier) {
+        super(name, productID, quantity, customerPrice, supplierPrice, supplier);
         this.safetyRating = safetyRating;
         this.material = material;
         this.size = size;

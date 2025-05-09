@@ -1,7 +1,8 @@
 public class BusinessOrder extends BaseOrder {
     private Supplier supplier;
 
-    public BusinessOrder(Supplier supplier) {
+    public BusinessOrder(Supplier supplier, String orderID) {
+        super(orderID);
         this.supplier = supplier;
     }
 

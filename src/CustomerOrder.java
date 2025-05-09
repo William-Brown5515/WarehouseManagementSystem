@@ -3,7 +3,8 @@ import java.time.LocalDate;
 public class CustomerOrder extends BaseOrder {
     private Customer customer;
 
-    public CustomerOrder(Customer customer) {
+    public CustomerOrder(Customer customer, String orderID) {
+        super(orderID);
         this.customer = customer;
     }
 

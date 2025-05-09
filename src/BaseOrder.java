@@ -15,9 +15,9 @@ public class BaseOrder {
     private boolean delivered;
     protected InventoryManager inventory;
 
-    public BaseOrder() {
+    public BaseOrder( String orderID ) {
         this.orderedProducts = new ArrayList<OrderedProduct>();
-        this.orderID = UUID.randomUUID().toString();
+        this.orderID = orderID;
         this.totalPrice = 0.0;
         this.orderDate = null;
         this.orderStatus = "Order in Progress";
