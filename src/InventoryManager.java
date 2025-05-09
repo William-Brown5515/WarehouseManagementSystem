@@ -59,22 +59,15 @@ public class InventoryManager {
         }
     }
 
-    public void lowStock() {
-        // Create an ArrayList, then iterate through the products and check if stock is low
-        ArrayList<Product> items = new ArrayList<Product>();
+    public List<Product> lowStock() {
+        // Create a List, then iterate through the products and check if stock is low
+        List<Product> lowStockItems = new ArrayList<>();
         for (Product product : products) {
-            if (product.getQuantity() <= 10) {
-                // Add the product to the list if stock is low
-                items.add(product);
+            if (product.getQuantity() <= 50) {
+                lowStockItems.add(product);
             }
         }
-        if (!items.isEmpty()) {
-            // Iterate through the low-stock products and display relevant info
-            System.out.println("These are the items with low stock:");
-            for (Product product : items) {
-                System.out.println ("Name: " + product.getName() + "    Quantity: " + product.getQuantity());
-            }
-        }
+        return lowStockItems;
     }
 
     public void reduceStock(String productID, int quantity) {
