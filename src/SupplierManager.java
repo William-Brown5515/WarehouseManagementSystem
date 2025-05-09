@@ -42,4 +42,15 @@ public class SupplierManager {
             System.out.println(supplier.toString());
         }
     }
+
+    public boolean updateSupplierDetails(String supplierID, String name, String phone, String email) {
+        Supplier supplier = getSupplier(supplierID);
+        if (supplier != null) {
+            supplier.setName(name);
+            supplier.setPhone(phone);
+            supplier.setEmail(email);
+            return true;
+        }
+        return false;
+    }
 }
