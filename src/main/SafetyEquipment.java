@@ -1,3 +1,5 @@
+package main;
+
 public class SafetyEquipment extends Product {
 
     private String safetyRating;

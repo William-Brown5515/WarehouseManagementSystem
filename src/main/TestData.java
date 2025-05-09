@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package main;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class TestData {
 
         // Create list of products for each subclass and assign them to the appropriate supplier
         List<Product> products = Arrays.asList(
-                // Tool products
+                // main.Tool products
                 new Tool("Cordless Drill", "PROD123", 50, 120.00, 80.00, "Battery", "1.5", suppliers.get(0)),
                 new Tool("Hammer", "PROD124", 150, 15.00, 10.00, "Manual", "0.7", suppliers.get(0)),
                 new Tool("Screwdriver Set", "PROD125", 200, 25.00, 15.00, "Manual", "0.5", suppliers.get(0)),

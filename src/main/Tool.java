@@ -1,3 +1,5 @@
+package main;
+
 public class Tool extends Product {
 
     private String powerSource;
