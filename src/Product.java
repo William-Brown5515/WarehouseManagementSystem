@@ -44,6 +44,6 @@ public class Product {
     // Overrides the default toString() method to provide readable summary of product details
     @Override
     public String toString() {
-        return "Product Name: " + name + ", Product ID: " + productID + ", Quantity: " + quantity + ", Price: " + price;
+        return "Product Name: " + name + ", Product ID: " + productID + ", Quantity: " + quantity + ", Consumer Price: " + customerPrice + ", Supplier Price: " + supplierPrice;
     }
 }
