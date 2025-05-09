@@ -1,10 +1,8 @@
-import java.time.LocalDate;
-
 public class CustomerOrder extends BaseOrder {
     private Customer customer;
 
-    public CustomerOrder(Customer customer, String orderID) {
-        super(orderID);
+    public CustomerOrder(Customer customer, String orderID, FinancialReport report, InventoryManager inventory) {
+        super(orderID, report, inventory);
         this.customer = customer;
     }
 
@@ -26,6 +24,7 @@ public class CustomerOrder extends BaseOrder {
             inventory.reduceStock(orderedProduct.getProduct().getProductID(), orderedProduct.getQuantity());
         }
         updatePayment(true);
+        getReport().orderRevenue(getTotalPrice());
         updateOrderStatus("Paid, being Delivered");
         updateOrderDate();
     }

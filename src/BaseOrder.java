@@ -14,8 +14,9 @@ public class BaseOrder {
     private boolean payment;
     private boolean delivered;
     protected InventoryManager inventory;
+    private FinancialReport report;
 
-    public BaseOrder( String orderID ) {
+    public BaseOrder( String orderID, FinancialReport report, InventoryManager inventory) {
         this.orderedProducts = new ArrayList<OrderedProduct>();
         this.orderID = orderID;
         this.totalPrice = 0.0;
@@ -23,7 +24,8 @@ public class BaseOrder {
         this.orderStatus = "Order in Progress";
         this.payment = false;
         this.delivered = false;
-        this.inventory = new InventoryManager();
+        this.report = report;
+        this.inventory = inventory;
     }
 
     // Class getters
@@ -51,9 +53,11 @@ public class BaseOrder {
         return delivered;
     }
 
+    public FinancialReport getReport() { return report; }
+
     // Class setters
     public void updateTotalPrice(double price) {
-        totalPrice += price;
+        totalPrice = price;
     }
 
     public void updateOrderDate() {
@@ -77,33 +81,36 @@ public class BaseOrder {
         recalculateTotalPrice();
     }
 
-    protected void changeProductQuantity(OrderedProduct newProduct, int quantity) {
-        for (OrderedProduct orderedProduct : orderedProducts) {
-            if (orderedProduct.getProduct().equals(newProduct.getProduct())) {
-                if (quantity != orderedProduct.getQuantity()) {
-                    orderedProduct.getProduct().setQuantity(quantity);
-                    recalculateTotalPrice();
-                }
-                return;
-            }
+    protected void changeProductQuantity(OrderedProduct orderedProduct, int quantity) {
+        if (quantity != orderedProduct.getQuantity()) {
+            orderedProduct.setQuantity(quantity);
+            recalculateTotalPrice();
         }
+//        for (OrderedProduct orderedProduct : orderedProducts) {
+//            if (orderedProduct.getProduct().equals(newProduct.getProduct())) {
+//                if (quantity != orderedProduct.getQuantity()) {
+//                    orderedProduct.getProduct().setQuantity(quantity);
+//                    recalculateTotalPrice();
+//                    return;
+//                }
+//                return;
+//            }
+//        }
     }
 
-    public boolean addItem(String ProductId, int Quantity) {
+    public void addItem(String ProductId, int Quantity) {
         Product product = inventory.findProductById(ProductId);
         if (product != null) {
             for (OrderedProduct orderedProduct : getOrderedProducts()) {
                 if (orderedProduct.getProduct().getProductID().equals(ProductId)) {
                     changeProductQuantity(orderedProduct, Quantity);
                     recalculateTotalPrice();
-                    return true;
+                    return;
                 }
             }
             addOrderedProduct(new OrderedProduct(product, Quantity));
             recalculateTotalPrice();
-            return true;
         }
-        return false;
     }
 
     public boolean removeItem(String ProductID, Integer Quantity) {

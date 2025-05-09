@@ -12,7 +12,7 @@ public class InventoryManager {
 
     // A method to add a new product to the ArrayList
     public void addProduct(Product product) {
-        this.products.add(product);
+        products.add(product);
     }
 
     // A method which lists all the products
