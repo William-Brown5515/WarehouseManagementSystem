@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,28 +22,28 @@ public class TestData {
         // Create list of products for each subclass and assign them to the appropriate supplier
         List<Product> products = Arrays.asList(
                 // Tool products
-                new Tool("Cordless Drill", "PROD123", 50, 120.00, 80.00, "Battery", "1.5", suppliers.getFirst()),
-                new Tool("Hammer", "PROD124", 150, 15.00, 10.00, "Manual", "0.7", suppliers.getFirst()),
-                new Tool("Screwdriver Set", "PROD125", 200, 25.00, 15.00, "Manual", "0.5", suppliers.getFirst()),
+                new Tool("Cordless Drill", "PROD123", 50, 120.00, 80.00, "Battery", "1.5", suppliers.get(0)),
+                new Tool("Hammer", "PROD124", 150, 15.00, 10.00, "Manual", "0.7", suppliers.get(0)),
+                new Tool("Screwdriver Set", "PROD125", 200, 25.00, 15.00, "Manual", "0.5", suppliers.get(0)),
                 new Tool("Power Saw", "PROD126", 75, 250.00, 150.00, "Electric", "3.0", suppliers.get(1)),
                 new Tool("Angle Grinder", "PROD127", 120, 80.00, 60.00, "Electric", "1.8", suppliers.get(1)),
 
                 // Safety Equipment products
-                new SafetyEquipment("Safety Gloves", "PROD128", 200, 30.00, 20.00, "5-star", "Leather", "Medium", true, suppliers.getFirst()),
-                new SafetyEquipment("Safety Glasses", "PROD129", 100, 50.00, 35.00, "3-star", "Polycarbonate", "Standard", false, suppliers.getFirst()),
+                new SafetyEquipment("Safety Gloves", "PROD128", 200, 30.00, 20.00, "5-star", "Leather", "Medium", true, suppliers.get(0)),
+                new SafetyEquipment("Safety Glasses", "PROD129", 100, 50.00, 35.00, "3-star", "Polycarbonate", "Standard", false, suppliers.get(0)),
                 new SafetyEquipment("Ear Protection", "PROD130", 80, 45.00, 35.00, "4-star", "Foam", "Standard", true, suppliers.get(1)),
                 new SafetyEquipment("Knee Pads", "PROD131", 150, 35.00, 25.00, "5-star", "Rubber", "One Size", true, suppliers.get(1)),
-                new SafetyEquipment("Respirator Mask", "PROD132", 50, 100.00, 75.00, "5-star", "Silicone", "Medium", true, suppliers.getFirst()),
+                new SafetyEquipment("Respirator Mask", "PROD132", 50, 100.00, 75.00, "5-star", "Silicone", "Medium", true, suppliers.get(0)),
 
                 // Construction Material products
                 new ConstructionMaterial("Cement", "PROD133", 300, 5.00, 3.00, "Cement", "25", "50kg bag", suppliers.get(1)),
                 new ConstructionMaterial("Steel Bars", "PROD134", 100, 50.00, 40.00, "Steel", "200", "10 meters", suppliers.get(1)),
-                new ConstructionMaterial("Sand", "PROD135", 500, 10.00, 7.00, "Sand", "100", "25kg bag", suppliers.getFirst()),
+                new ConstructionMaterial("Sand", "PROD135", 500, 10.00, 7.00, "Sand", "100", "25kg bag", suppliers.get(0)),
                 new ConstructionMaterial("Bricks", "PROD136", 200, 50.00, 30.00, "Clay", "50", "1000 pcs", suppliers.get(2)),
                 new ConstructionMaterial("Gravel", "PROD137", 150, 15.00, 10.00, "Gravel", "150", "25kg bag", suppliers.get(3)),
 
                 // Machinery products
-                new Machinery("Excavator", "PROD138", 10, 25000.00, 18000.00, "200HP", "380V", "Excavator", "Caterpillar", 12, suppliers.getFirst()),
+                new Machinery("Excavator", "PROD138", 10, 25000.00, 18000.00, "200HP", "380V", "Excavator", "Caterpillar", 12, suppliers.get(0)),
                 new Machinery("Forklift", "PROD139", 5, 15000.00, 11000.00, "150HP", "220V", "Forklift", "Toyota", 24, suppliers.get(2)),
                 new Machinery("Bulldozer", "PROD140", 3, 45000.00, 35000.00, "300HP", "480V", "Bulldozer", "Komatsu", 18, suppliers.get(4)),
                 new Machinery("Crane", "PROD141", 2, 100000.00, 75000.00, "500HP", "400V", "Crane", "Liebherr", 36, suppliers.get(3)),
@@ -55,7 +56,17 @@ public class TestData {
         }
     }
 
-    public static void customerOrders(CustomerManager customerManager) {
+    private static CustomerOrder createOrder(Customer customer, String orderId, Object[][] items, FinancialReport report, InventoryManager inventory) {
+        CustomerOrder order = new CustomerOrder(customer, orderId, report, inventory);
+        for (Object[] item : items) {
+            String productId = (String) item[0];
+            int quantity = (int) item[1];
+            order.addItem(productId, quantity);
+        }
+        return order;
+    }
+
+    public static void customerOrders(CustomerManager customerManager, FinancialReport report, InventoryManager inventory) {
         // Sample Customers
         List<Customer> customers = Arrays.asList(
             new Customer("John Doe", "CUST123", "johndoe@example.com", "555-1234"),
@@ -70,39 +81,327 @@ public class TestData {
         }
 
         // Sample Orders (Creating order and adding products one by one)
+        List<CustomerOrder> orders = Arrays.asList(
+                createOrder(customers.get(0), "ORD123", new Object[][] {
+                        {"PROD123", 1}, {"PROD126", 2}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD124", new Object[][] {
+                        {"PROD124", 3}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD125", new Object[][] {
+                        {"PROD123", 10}, {"PROD128", 50}, {"PROD127", 100}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD126", new Object[][] {
+                        {"PROD125", 5}, {"PROD129", 2}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD127", new Object[][] {
+                        {"PROD124", 2}, {"PROD127", 10}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD128", new Object[][] {
+                        {"PROD129", 5}, {"PROD130", 3}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD200", new Object[][] {
+                        {"PROD136", 8}, {"PROD131", 9}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD201", new Object[][] {
+                        {"PROD129", 3}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD202", new Object[][] {
+                        {"PROD140", 2}, {"PROD123", 2}, {"PROD132", 4}, {"PROD130", 9}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD203", new Object[][] {
+                        {"PROD136", 3}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD204", new Object[][] {
+                        {"PROD142", 6}, {"PROD126", 2}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD205", new Object[][] {
+                        {"PROD125", 7}, {"PROD132", 10}, {"PROD129", 6}, {"PROD124", 1}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD206", new Object[][] {
+                        {"PROD127", 10}, {"PROD135", 10}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD207", new Object[][] {
+                        {"PROD132", 6}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD208", new Object[][] {
+                        {"PROD139", 9}, {"PROD125", 10}, {"PROD126", 6}, {"PROD141", 2}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD209", new Object[][] {
+                        {"PROD132", 4}, {"PROD142", 5}, {"PROD129", 6}, {"PROD127", 1}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD210", new Object[][] {
+                        {"PROD138", 1}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD211", new Object[][] {
+                        {"PROD130", 4}, {"PROD124", 4}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD212", new Object[][] {
+                        {"PROD142", 2}, {"PROD127", 2}, {"PROD136", 6}, {"PROD135", 7}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD213", new Object[][] {
+                        {"PROD134", 6}, {"PROD133", 1}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD214", new Object[][] {
+                        {"PROD125", 3}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD215", new Object[][] {
+                        {"PROD138", 4}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD216", new Object[][] {
+                        {"PROD126", 1}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD217", new Object[][] {
+                        {"PROD129", 8}, {"PROD123", 1}, {"PROD137", 4}, {"PROD131", 4}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD218", new Object[][] {
+                        {"PROD139", 10}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD219", new Object[][] {
+                        {"PROD123", 10}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD220", new Object[][] {
+                        {"PROD131", 9}, {"PROD137", 2}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD221", new Object[][] {
+                        {"PROD123", 10}, {"PROD126", 10}, {"PROD132", 8}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD222", new Object[][] {
+                        {"PROD136", 7}, {"PROD129", 1}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD223", new Object[][] {
+                        {"PROD135", 2}, {"PROD133", 3}, {"PROD136", 1}, {"PROD126", 1}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD224", new Object[][] {
+                        {"PROD124", 8}, {"PROD141", 6}, {"PROD136", 1}, {"PROD131", 4}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD225", new Object[][] {
+                        {"PROD129", 8}, {"PROD135", 2}, {"PROD140", 5}, {"PROD126", 5}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD226", new Object[][] {
+                        {"PROD138", 1}, {"PROD125", 6}, {"PROD130", 6}, {"PROD135", 4}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD227", new Object[][] {
+                        {"PROD126", 6}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD228", new Object[][] {
+                        {"PROD132", 8}, {"PROD131", 8}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD229", new Object[][] {
+                        {"PROD129", 6}, {"PROD134", 7}, {"PROD125", 6}, {"PROD137", 2}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD230", new Object[][] {
+                        {"PROD142", 9}, {"PROD123", 7}, {"PROD129", 3}, {"PROD128", 2}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD231", new Object[][] {
+                        {"PROD135", 6}, {"PROD140", 3}, {"PROD134", 3}, {"PROD137", 9}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD232", new Object[][] {
+                        {"PROD142", 5}, {"PROD131", 8}, {"PROD129", 2}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD233", new Object[][] {
+                        {"PROD134", 8}, {"PROD135", 9}, {"PROD128", 4}, {"PROD130", 6}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD234", new Object[][] {
+                        {"PROD135", 9}, {"PROD140", 4}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD235", new Object[][] {
+                        {"PROD141", 4}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD236", new Object[][] {
+                        {"PROD126", 1}, {"PROD123", 1}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD237", new Object[][] {
+                        {"PROD140", 2}, {"PROD130", 4}, {"PROD129", 8}, {"PROD133", 8}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD238", new Object[][] {
+                        {"PROD142", 4}, {"PROD129", 1}, {"PROD136", 1}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD239", new Object[][] {
+                        {"PROD131", 3}, {"PROD139", 10}, {"PROD126", 5}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD240", new Object[][] {
+                        {"PROD125", 4}, {"PROD128", 10}, {"PROD131", 10}, {"PROD133", 6}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD241", new Object[][] {
+                        {"PROD124", 3}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD242", new Object[][] {
+                        {"PROD129", 5}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD243", new Object[][] {
+                        {"PROD135", 3}, {"PROD137", 9}, {"PROD136", 2}, {"PROD140", 1}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD244", new Object[][] {
+                        {"PROD142", 6}, {"PROD133", 10}, {"PROD123", 7}, {"PROD139", 7}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD245", new Object[][] {
+                        {"PROD131", 9}, {"PROD133", 9}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD246", new Object[][] {
+                        {"PROD129", 7}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD247", new Object[][] {
+                        {"PROD133", 4}, {"PROD134", 10}, {"PROD135", 7}, {"PROD138", 8}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD248", new Object[][] {
+                        {"PROD132", 1}, {"PROD134", 4}, {"PROD126", 5}, {"PROD140", 6}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD249", new Object[][] {
+                        {"PROD136", 8}, {"PROD129", 10}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD250", new Object[][] {
+                        {"PROD134", 6}, {"PROD135", 2}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD251", new Object[][] {
+                        {"PROD131", 5}, {"PROD137", 1}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD252", new Object[][] {
+                        {"PROD127", 7}, {"PROD124", 7}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD253", new Object[][] {
+                        {"PROD129", 9}, {"PROD128", 2}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD254", new Object[][] {
+                        {"PROD129", 5}, {"PROD132", 2}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD255", new Object[][] {
+                        {"PROD136", 6}, {"PROD127", 2}, {"PROD126", 9}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD256", new Object[][] {
+                        {"PROD139", 3}, {"PROD129", 8}, {"PROD126", 2}, {"PROD136", 5}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD257", new Object[][] {
+                        {"PROD124", 3}, {"PROD132", 3}, {"PROD130", 4}, {"PROD140", 10}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD258", new Object[][] {
+                        {"PROD138", 8}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD259", new Object[][] {
+                        {"PROD132", 6}, {"PROD129", 7}, {"PROD124", 6}, {"PROD141", 9}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD260", new Object[][] {
+                        {"PROD123", 7}, {"PROD136", 8}, {"PROD140", 9}, {"PROD135", 4}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD261", new Object[][] {
+                        {"PROD132", 7}, {"PROD123", 6}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD262", new Object[][] {
+                        {"PROD130", 5}, {"PROD139", 10}, {"PROD141", 6}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD263", new Object[][] {
+                        {"PROD125", 5}, {"PROD130", 3}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD264", new Object[][] {
+                        {"PROD123", 1}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD265", new Object[][] {
+                        {"PROD123", 2}, {"PROD129", 10}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD266", new Object[][] {
+                        {"PROD139", 1}, {"PROD131", 8}, {"PROD127", 4}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD267", new Object[][] {
+                        {"PROD142", 9}, {"PROD140", 2}, {"PROD127", 5}, {"PROD124", 1}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD268", new Object[][] {
+                        {"PROD132", 3}, {"PROD123", 10}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD269", new Object[][] {
+                        {"PROD123", 9}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD270", new Object[][] {
+                        {"PROD129", 6}, {"PROD133", 3}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD271", new Object[][] {
+                        {"PROD141", 5}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD272", new Object[][] {
+                        {"PROD133", 1}, {"PROD131", 9}, {"PROD124", 3}, {"PROD141", 3}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD273", new Object[][] {
+                        {"PROD140", 8}, {"PROD138", 10}, {"PROD131", 4}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD274", new Object[][] {
+                        {"PROD142", 2}, {"PROD127", 6}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD275", new Object[][] {
+                        {"PROD132", 7}, {"PROD135", 5}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD276", new Object[][] {
+                        {"PROD137", 5}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD277", new Object[][] {
+                        {"PROD137", 10}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD278", new Object[][] {
+                        {"PROD126", 1}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD279", new Object[][] {
+                        {"PROD127", 4}, {"PROD129", 10}, {"PROD123", 5}, {"PROD135", 10}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD280", new Object[][] {
+                        {"PROD142", 10}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD281", new Object[][] {
+                        {"PROD131", 1}, {"PROD141", 3}, {"PROD123", 2}, {"PROD135", 10}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD282", new Object[][] {
+                        {"PROD136", 2}, {"PROD123", 8}, {"PROD132", 7}, {"PROD127", 9}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD283", new Object[][] {
+                        {"PROD127", 2}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD284", new Object[][] {
+                        {"PROD130", 7}, {"PROD142", 6}, {"PROD139", 3}, {"PROD133", 1}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD285", new Object[][] {
+                        {"PROD132", 10}, {"PROD136", 10}, {"PROD133", 2}, {"PROD124", 7}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD286", new Object[][] {
+                        {"PROD137", 6}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD287", new Object[][] {
+                        {"PROD126", 4}, {"PROD123", 9}, {"PROD138", 1}, {"PROD124", 7}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD288", new Object[][] {
+                        {"PROD137", 3}, {"PROD135", 4}, {"PROD130", 8}, {"PROD132", 6}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD289", new Object[][] {
+                        {"PROD124", 4}, {"PROD133", 10}
+                }, report, inventory),
+                createOrder(customers.get(0), "ORD290", new Object[][] {
+                        {"PROD127", 2}, {"PROD139", 5}, {"PROD136", 7}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD291", new Object[][] {
+                        {"PROD129", 2}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD292", new Object[][] {
+                        {"PROD123", 7}, {"PROD134", 9}, {"PROD128", 1}, {"PROD132", 3}
+                }, report, inventory),
+                createOrder(customers.get(3), "ORD293", new Object[][] {
+                        {"PROD132", 8}, {"PROD138", 7}, {"PROD131", 2}, {"PROD125", 6}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD294", new Object[][] {
+                        {"PROD127", 3}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD295", new Object[][] {
+                        {"PROD126", 3}, {"PROD134", 1}, {"PROD133", 9}, {"PROD123", 1}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD296", new Object[][] {
+                        {"PROD124", 8}, {"PROD133", 2}, {"PROD125", 2}
+                }, report, inventory),
+                createOrder(customers.get(4), "ORD297", new Object[][] {
+                        {"PROD130", 7}, {"PROD125", 8}, {"PROD133", 4}, {"PROD123", 7}
+                }, report, inventory),
+                createOrder(customers.get(2), "ORD298", new Object[][] {
+                        {"PROD131", 3}, {"PROD141", 8}
+                }, report, inventory),
+                createOrder(customers.get(1), "ORD299", new Object[][] {
+                        {"PROD127", 5}, {"PROD141", 5}
+                }, report, inventory)
 
-        // Order 1: Customer John Doe, 1 Tool + 1 Safety Equipment
-        CustomerOrder order1 = new CustomerOrder(customers.getFirst(), "ORD123");
-        order1.addItem("PROD123", 1);  // 1 Cordless Drill
-        order1.addItem("PROD126", 2);  // 2 Safety Glasses
-
-        // Order 2: Customer Jane Smith, 3 Tools
-        CustomerOrder order2 = new CustomerOrder(customers.get(1), "ORD124");
-        order2.addItem("PROD124", 3);   // 3 Hammers
-
-        // Order 3: ACME Corp, Large order of Tools and Construction Materials
-        CustomerOrder order3 = new CustomerOrder(customers.get(2), "ORD125");
-        order3.addItem("PROD123", 10);  // 10 Cordless Drills
-        order3.addItem("PROD128", 50);  // 50 Steel Bars
-        order3.addItem("PROD127", 100); // 100 Bags of Cement
-
-        // Order 4: Customer Sophie Brown, Mixed order of Safety Equipment and Machinery
-        CustomerOrder order4 = new CustomerOrder(customers.get(3), "ORD126");
-        order4.addItem("PROD125", 5);   // 5 Safety Gloves
-        order4.addItem("PROD129", 2);   // 2 Excavators
-
-        // Order 5: Customer Liam Green, Small order of Tools and Materials
-        CustomerOrder order5 = new CustomerOrder(customers.get(4), "ORD127");
-        order5.addItem("PROD124", 2);   // 2 Hammers
-        order5.addItem("PROD127", 10);  // 10 Bags of Cement
-
-        // Order 6: ACME Corp, Expensive order with Machinery
-        CustomerOrder order6 = new CustomerOrder(customers.get(2), "ORD128");
-        order6.addItem("PROD129", 5);   // 5 Excavators
-        order6.addItem("PROD130", 3);   // 3 Forklifts
-
-        // List of orders
-        List<CustomerOrder> orders = Arrays.asList(order1, order2, order3, order4, order5, order6);
+        );
 
         // Process orders
         for (CustomerOrder order : orders) {
@@ -111,19 +410,21 @@ public class TestData {
         }
     }
 
-    public static void businessOrders(SupplierManager supplierManager) {
+    public static void businessOrders(SupplierManager supplierManager, FinancialReport report, InventoryManager inventory) {
+        System.out.println("WITHIN BUSINESS ORDERS");
         // Create a business order for Supplier 1
         Supplier supplier1 = supplierManager.getSupplier("ID-745");
-        BusinessOrder businessOrder1 = new BusinessOrder(supplier1, "BUSINESS-ORD001");
+        BusinessOrder businessOrder1 = new BusinessOrder(supplier1, "BUSINESS-ORD001", report, inventory);
 
         // Add items to the business order
         businessOrder1.addItem("PROD123", 100);  // 100 Cordless Drills
         businessOrder1.addItem("PROD124", 200);  // 200 Hammers
         businessOrder1.addItem("PROD128", 150);  // 150 Safety Gloves
+        businessOrder1.addItem("PROD142", 100);  // 100 Backhoe Loaders
 
         // Create another business order for Supplier 2
         Supplier supplier2 = supplierManager.getSupplier("ID-324");
-        BusinessOrder businessOrder2 = new BusinessOrder(supplier2, "BUSINESS-ORD002");
+        BusinessOrder businessOrder2 = new BusinessOrder(supplier2, "BUSINESS-ORD002", report, inventory);
 
         // Add items to the business order
         businessOrder2.addItem("PROD137", 500);  // 500 Bags of Gravel
@@ -131,30 +432,36 @@ public class TestData {
 
         // Create another business order for Supplier 3
         Supplier supplier3 = supplierManager.getSupplier("ID-567");
-        BusinessOrder businessOrder3 = new BusinessOrder(supplier3, "BUSINESS-ORD003");
+        BusinessOrder businessOrder3 = new BusinessOrder(supplier3, "BUSINESS-ORD003", report, inventory);
 
         // Add items to the business order
         businessOrder3.addItem("PROD136", 100);  // 100 Bricks
-        businessOrder3.addItem("PROD139", 50);   // 50 Forklifts
+        businessOrder3.addItem("PROD139", 60);   // 60 Forklifts
+        businessOrder3.addItem("PROD127", 150);  // 150 Angle Grinders
 
         // Create another business order for Supplier 4
         Supplier supplier4 = supplierManager.getSupplier("ID-890");
-        BusinessOrder businessOrder4 = new BusinessOrder(supplier4, "BUSINESS-ORD004");
+        BusinessOrder businessOrder4 = new BusinessOrder(supplier4, "BUSINESS-ORD004", report, inventory);
 
         // Add items to the business order
-        businessOrder4.addItem("PROD141", 10);   // 10 Cranes
+        businessOrder4.addItem("PROD141", 50);   // 50 Cranes
         businessOrder4.addItem("PROD133", 200);  // 200 Bags of Cement
 
         // Create another business order for Supplier 5
         Supplier supplier5 = supplierManager.getSupplier("ID-101");
-        BusinessOrder businessOrder5 = new BusinessOrder(supplier5, "BUSINESS-ORD005");
+        BusinessOrder businessOrder5 = new BusinessOrder(supplier5, "BUSINESS-ORD005", report, inventory);
 
         // Add items to the business order
-        businessOrder5.addItem("PROD140", 50);  // 50 Bulldozers
+        businessOrder5.addItem("PROD140", 100);  // 100 Bulldozers
         businessOrder5.addItem("PROD125", 100); // 100 Screwdriver Sets
+        businessOrder5.addItem("PROD132", 200); // 200 Respirator Masks
+
+        BusinessOrder businessOrder6 = new BusinessOrder(supplier1, "BUSINESS-ORD006", report, inventory);
+        businessOrder6.addItem("PROD138", 100); // 100 Excavators
+        businessOrder6.addItem("PROD129", 50);   // 50 Safety Glasses
 
         // List of orders
-        List<BusinessOrder> businessOrders = Arrays.asList(businessOrder1, businessOrder2, businessOrder3, businessOrder4, businessOrder5);
+        List<BusinessOrder> businessOrders = Arrays.asList(businessOrder1, businessOrder2, businessOrder3, businessOrder4, businessOrder5, businessOrder6);
 
         for (BusinessOrder businessOrder : businessOrders) {
             businessOrder.completeOrder();
