@@ -1,4 +1,4 @@
-import java.util.Iterator;
+import java.time.LocalDate;
 
 public class CustomerOrder extends BaseOrder {
     private Customer customer;
@@ -9,51 +9,28 @@ public class CustomerOrder extends BaseOrder {
 
     public Customer getCustomer() { return customer; }
 
-    public boolean addItem( String ProductId, int Quantity ) {
-        Product product = inventory.findProductById(ProductId);
-        if (product != null) {
-            for (OrderedProduct orderedProduct : getOrderedProducts()) {
-                if (orderedProduct.getProduct().getProductID().equals(ProductId)) {
-                    changeProductQuantity(orderedProduct, Quantity);
-                    recalculateTotalPrice();
-                    return true;
-                }
-            }
-            addOrderedProduct(new OrderedProduct(product, Quantity));
-            recalculateTotalPrice();
-            return true;
+    @Override
+    protected void recalculateTotalPrice() {
+        double newTotal = 0.0;
+        for (OrderedProduct orderedProduct : getOrderedProducts()) {
+            newTotal += orderedProduct.getProduct().getCustomerPrice() * orderedProduct.getQuantity();
         }
-        return false;
+        updateTotalPrice(newTotal);
     }
 
-    public boolean removeItem( String ProductID, Integer Quantity ) {
-
-        // Check whether the product exists
-        Product product = inventory.findProductById(ProductID);
-
-        if (product != null) {
-
-            // Iterate through the products to check if the product has already been added to basket
-            Iterator<OrderedProduct> iterator = getOrderedProducts().iterator();
-            while (iterator.hasNext()) {
-                OrderedProduct orderedProduct = iterator.next();
-                if (orderedProduct.getProduct().getProductID().equals(ProductID)) {
-                    if (orderedProduct.getQuantity() <= Quantity) {
-                        // Update the ordered quantity
-                        iterator.remove();
-                    } else {
-                        // Update the ordered quantity
-                        orderedProduct.setQuantity(orderedProduct.getQuantity() - Quantity);
-                    }
-                    recalculateTotalPrice();
-                    return true;
-                }
-            }
+    @Override
+    public void completeOrder() {
+        // Cycle through the ordered products and adjust the stock accordingly
+        for (OrderedProduct orderedProduct : getOrderedProducts()) {
+            inventory.reduceStock(orderedProduct.getProduct().getProductID(), orderedProduct.getQuantity());
         }
-        return false;
+        updatePayment(true);
+        updateOrderStatus("Paid, being Delivered");
+        updateOrderDate();
     }
 
     // A method to run when the order is delivered
+    @Override
     public void deliverOrder() {
         updateDelivered(true);
         updateOrderStatus("Delivered");
