@@ -18,11 +18,32 @@ public class CustomerOrder extends BaseOrder {
     }
 
     @Override
-    public void completeOrder() {
-        // Cycle through the ordered products and adjust the stock accordingly
-        for (OrderedProduct orderedProduct : getOrderedProducts()) {
-            inventory.reduceStock(orderedProduct.getProduct().getProductID(), orderedProduct.getQuantity());
+    public void addItem(String ProductId, int Quantity) {
+        Product product = inventory.findProductById(ProductId);
+        if (product != null) {
+            for (OrderedProduct orderedProduct : getOrderedProducts()) {
+                if (orderedProduct.getProduct().getProductID().equals(ProductId)) {
+                    if (product.getQuantity() >= (Quantity + orderedProduct.getQuantity())) {
+                        changeProductQuantity(orderedProduct, Quantity);
+                        recalculateTotalPrice();
+                        inventory.reduceStock(ProductId, Quantity);
+                        return;
+                    }
+                }
+            }
+            if (product.getQuantity() >= Quantity) {
+                System.out.println("Ordered. Product: " + product + ", Quantity: " + Quantity + ", Amount in stock: " + product.getQuantity());
+                addOrderedProduct(new OrderedProduct(product, Quantity));
+                recalculateTotalPrice();
+                inventory.reduceStock(ProductId, Quantity);
+            }
+        } else {
+            System.out.println("Product not found");
         }
+    }
+
+    @Override
+    public void completeOrder() {
         updatePayment(true);
         getReport().orderRevenue(getTotalPrice());
         updateOrderStatus("Paid, being Delivered");

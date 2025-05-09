@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-public class BaseOrder {
+public abstract class BaseOrder {
 
     private String orderID;
     private double totalPrice;
@@ -83,35 +83,12 @@ public class BaseOrder {
 
     protected void changeProductQuantity(OrderedProduct orderedProduct, int quantity) {
         if (quantity != orderedProduct.getQuantity()) {
-            orderedProduct.setQuantity(quantity);
+            orderedProduct.setQuantity(quantity + orderedProduct.getQuantity());
             recalculateTotalPrice();
         }
-//        for (OrderedProduct orderedProduct : orderedProducts) {
-//            if (orderedProduct.getProduct().equals(newProduct.getProduct())) {
-//                if (quantity != orderedProduct.getQuantity()) {
-//                    orderedProduct.getProduct().setQuantity(quantity);
-//                    recalculateTotalPrice();
-//                    return;
-//                }
-//                return;
-//            }
-//        }
     }
 
-    public void addItem(String ProductId, int Quantity) {
-        Product product = inventory.findProductById(ProductId);
-        if (product != null) {
-            for (OrderedProduct orderedProduct : getOrderedProducts()) {
-                if (orderedProduct.getProduct().getProductID().equals(ProductId)) {
-                    changeProductQuantity(orderedProduct, Quantity);
-                    recalculateTotalPrice();
-                    return;
-                }
-            }
-            addOrderedProduct(new OrderedProduct(product, Quantity));
-            recalculateTotalPrice();
-        }
-    }
+    public abstract void addItem(String ProductId, int Quantity);
 
     public boolean removeItem(String ProductID, Integer Quantity) {
 
