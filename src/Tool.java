@@ -3,8 +3,8 @@ public class Tool extends Product {
     private String powerSource;
     private String weightKg;
 
-    public Tool(String name, String productID, int quantity, double customerPrice, double supplierPrice, String powerSource, String weightKg) {
-        super(name, productID, quantity, customerPrice, supplierPrice);
+    public Tool(String name, String productID, int quantity, double customerPrice, double supplierPrice, String powerSource, String weightKg, Supplier supplier) {
+        super(name, productID, quantity, customerPrice, supplierPrice, supplier);
         this.powerSource = powerSource;
         this.weightKg = weightKg;
     }

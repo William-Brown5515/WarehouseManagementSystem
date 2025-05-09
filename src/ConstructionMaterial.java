@@ -4,8 +4,8 @@ public class ConstructionMaterial extends Product {
     private String weightKg;
     private String dimensions;
 
-    public ConstructionMaterial(String name, String productID, int quantity, double customerPrice, double supplierPrice, String materialType, String weightKg, String dimensions) {
-        super(name, productID, quantity, customerPrice, supplierPrice);
+    public ConstructionMaterial(String name, String productID, int quantity, double customerPrice, double supplierPrice, String materialType, String weightKg, String dimensions, Supplier supplier) {
+        super(name, productID, quantity, customerPrice, supplierPrice, supplier);
         this.materialType = materialType;
         this.weightKg = weightKg;
         this.dimensions = dimensions;
