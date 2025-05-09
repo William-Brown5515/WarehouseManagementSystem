@@ -1,3 +1,5 @@
+package main;
+
 public class ConstructionMaterial extends Product {
 
     private String materialType;

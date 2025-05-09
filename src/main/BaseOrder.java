@@ -1,8 +1,9 @@
+package main;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 public abstract class BaseOrder {
 
@@ -16,7 +17,7 @@ public abstract class BaseOrder {
     protected InventoryManager inventory;
     private FinancialReport report;
 
-    public BaseOrder( String orderID, FinancialReport report, InventoryManager inventory) {
+    public BaseOrder(String orderID, FinancialReport report, InventoryManager inventory) {
         this.orderedProducts = new ArrayList<OrderedProduct>();
         this.orderID = orderID;
         this.totalPrice = 0.0;

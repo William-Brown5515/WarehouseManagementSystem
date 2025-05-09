@@ -1,3 +1,5 @@
+package main;
+
 public class FinancialReport {
     private double currentMoney = 150000.0;
     private double salesRevenue = 0.0;

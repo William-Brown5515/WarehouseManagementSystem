@@ -1,3 +1,5 @@
+package main;
+
 public class CustomerOrder extends BaseOrder {
     private Customer customer;
 

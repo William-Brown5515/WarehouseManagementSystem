@@ -1,3 +1,5 @@
+package main;
+
 public class BusinessOrder extends BaseOrder {
     private Supplier supplier;
 

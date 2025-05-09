@@ -1,3 +1,5 @@
+package main;
+
 public class Machinery extends Product {
 
     private String enginePower;

@@ -1,13 +1,15 @@
-public class Customer {
+package main;
+
+public class Supplier {
 
     private String name;
-    private String customerId;
+    private String supplierID;
     private String email;
     private String phone;
 
-    public Customer(String name, String customerId, String email, String phone) {
+    public Supplier(String name, String supplierID, String email, String phone) {
         this.name = name;
-        this.customerId = customerId;
+        this.supplierID = supplierID;
         this.email = email;
         this.phone = phone;
     }
@@ -15,7 +17,7 @@ public class Customer {
     // Getter and setters for the object
     public String getName() { return name; }
 
-    public String getCustomerId() { return customerId; }
+    public String getSupplierID() { return supplierID; }
 
     public String getEmail() { return email; }
 
@@ -23,13 +25,15 @@ public class Customer {
 
     public void setName(String name) { this.name = name; }
 
+    public void setSupplierID(String supplierID) { this.supplierID = supplierID; }
+
     public void setEmail(String email) { this.email = email; }
 
     public void setPhone(String phone) { this.phone = phone; }
 
-    // Overrides the default toString() method to provide readable summary of customer details
+    // Overrides the default toString() method to provide readable summary of supplier details
     @Override
     public String toString() {
-        return "Customer ID: " + customerId + ", Name: " + name + ", Email: " + email + ", Phone: " + phone;
+        return "Supplier ID: " + supplierID + ", Name: " + name + ", Email: " + email;
     }
 }
