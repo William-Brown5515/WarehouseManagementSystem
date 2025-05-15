@@ -1,4 +1,6 @@
-package main;
+package main.products;
+
+import main.suppliers.Supplier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,7 @@ public class InventoryManager {
     }
 
     // A method to find a product by its ID
-    public Product findProductById(String id) {
+    public Product getProductById(String id) {
         // Iterating through the products
         for (Product product : products) {
             // If the product exists, remove and confirm true
@@ -51,7 +53,7 @@ public class InventoryManager {
 
     public boolean addStock(String productID, int quantity) {
         // Find the product by ID
-        Product product = findProductById(productID);
+        Product product = getProductById(productID);
         // If the product exists, add the stock as requested
         if (product != null) {
             product.setQuantity(product.getQuantity() + quantity);
@@ -65,7 +67,7 @@ public class InventoryManager {
         // Create a List, then iterate through the products and check if stock is low
         List<Product> lowStockItems = new ArrayList<>();
         for (Product product : products) {
-            if (product.getQuantity() <= 50) {
+            if (product.getQuantity() <= 20) {
                 lowStockItems.add(product);
             }
         }
@@ -73,9 +75,25 @@ public class InventoryManager {
     }
 
     public void reduceStock(String productID, int quantity) {
-        Product product = findProductById(productID);
+        Product product = getProductById(productID);
         if (product != null) {
             product.setQuantity(product.getQuantity() - quantity);
         }
+    }
+
+    public void getStockLevels() {
+        for (Product product : products) {
+            System.out.println("Product Name: " + product.getName() + " Product ID: " + product.getProductID() + " Quantity: " + product.getQuantity());
+        }
+    }
+
+    public List<Product> getProductsBySupplier(Supplier supplier) {
+        List<Product> productsBySupplier = new ArrayList<>();
+        for (Product product : products) {
+            if (product.getSupplier().equals(supplier)) {
+                productsBySupplier.add(product);
+            }
+        }
+        return productsBySupplier;
     }
 }

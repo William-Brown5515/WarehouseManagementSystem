@@ -1,4 +1,6 @@
-package main;
+package main.order;
+
+import main.products.Product;
 
 public class OrderedProduct {
 
@@ -15,4 +17,8 @@ public class OrderedProduct {
     public int getQuantity() { return quantity; }
 
     public void setQuantity(int quantity) { this.quantity = quantity; }
-}
+
+    @Override
+    public String toString() {
+        return "Product Name: " + product.getName() + " Product ID: " + product.getProductID() + " Quantity: " + quantity;
+    }}

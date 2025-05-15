@@ -1,4 +1,4 @@
-package main;
+package main.financial;
 
 public class FinancialReport {
     private double currentMoney = 150000.0;

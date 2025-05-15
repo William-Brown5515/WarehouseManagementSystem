@@ -1,14 +1,14 @@
 package main.order;
 
-import main.FinancialReport;
-import main.InventoryManager;
-import main.OrderedProduct;
-import main.Product;
+import main.financial.FinancialReport;
+import main.products.InventoryManager;
+import main.products.Product;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class BaseOrder {
 
@@ -17,27 +17,25 @@ public abstract class BaseOrder {
     private List<OrderedProduct> orderedProducts;
     private LocalDateTime orderDate;
     private String orderStatus;
-    private boolean payment;
     private boolean delivered;
     protected InventoryManager inventory;
     private FinancialReport report;
 
-    public BaseOrder(String orderID, FinancialReport report, InventoryManager inventory) {
+    public BaseOrder(FinancialReport report, InventoryManager inventory) {
         this.orderedProducts = new ArrayList<OrderedProduct>();
-        this.orderID = orderID;
+        this.orderID = "ORD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         this.totalPrice = 0.0;
         this.orderDate = null;
         this.orderStatus = "Order in Progress";
-        this.payment = false;
         this.delivered = false;
         this.report = report;
         this.inventory = inventory;
     }
 
     // Class getters
-    public double getTotalPrice() {
-        return totalPrice;
-    }
+    public double getTotalPrice() { return totalPrice; }
+
+    public String getOrderID() { return orderID; }
 
     public LocalDateTime getOrderDate() {
         return orderDate;
@@ -49,10 +47,6 @@ public abstract class BaseOrder {
 
     public List<OrderedProduct> getOrderedProducts() {
         return orderedProducts;
-    }
-
-    public boolean isPayment() {
-        return payment;
     }
 
     public boolean isDelivered() {
@@ -72,10 +66,6 @@ public abstract class BaseOrder {
 
     public void updateOrderStatus(String newOrderStatus) {
         orderStatus = newOrderStatus;
-    }
-
-    public void updatePayment(boolean paymentStatus) {
-        payment = paymentStatus;
     }
 
     public void updateDelivered(boolean deliveredStatus) {
@@ -99,7 +89,7 @@ public abstract class BaseOrder {
     public boolean removeItem(String ProductID, Integer Quantity) {
 
         // Check whether the product exists
-        Product product = inventory.findProductById(ProductID);
+        Product product = inventory.getProductById(ProductID);
 
         if (product != null) {
 
@@ -121,6 +111,12 @@ public abstract class BaseOrder {
             }
         }
         return false;
+    }
+
+    public void currentOrder() {
+        for (OrderedProduct product: orderedProducts) {
+            System.out.println("Product name: " + product.getProduct().getName() + ", Quantity: " + product.getQuantity());
+        }
     }
 
     // Placeholders to utilise polymorphism
