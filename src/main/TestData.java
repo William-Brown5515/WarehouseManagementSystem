@@ -34,7 +34,7 @@ public class TestData {
         // Create list of products for each subclass and assign them to the appropriate supplier
         List<main.products.Product> products = Arrays.asList(
                 // Tool products
-                new Product("Cordless Drill", "PROD123", 50, 120.00, 80.00, suppliers.get(0), main.products.ProductTypes.TOOL),
+                new Product("Cordless Drill", "PROD123", 50, 120.00, 80.00, suppliers.get(1), main.products.ProductTypes.TOOL),
                 new Product("Hammer", "PROD124", 150, 15.00, 10.00, suppliers.get(0), ProductTypes.TOOL),
                 new Product("Screwdriver Set", "PROD125", 200, 25.00, 15.00, suppliers.get(0), ProductTypes.TOOL),
                 new Product("Power Saw", "PROD126", 75, 250.00, 150.00, suppliers.get(1), ProductTypes.TOOL),

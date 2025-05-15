@@ -1,8 +1,8 @@
 package main.order;
 
-import main.FinancialReport;
+import main.financial.FinancialReport;
 import main.products.InventoryManager;
-import main.Product;
+import main.products.Product;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

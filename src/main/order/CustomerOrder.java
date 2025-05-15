@@ -2,6 +2,8 @@ package main.order;
 
 import main.customer.Customer;
 import main.products.InventoryManager;
+import main.financial.FinancialReport;
+import main.products.Product;
 
 public class CustomerOrder extends BaseOrder {
     private Customer customer;
