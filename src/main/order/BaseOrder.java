@@ -1,6 +1,11 @@
-package main;
+package main.order;
 
-import java.time.LocalDate;
+import main.FinancialReport;
+import main.InventoryManager;
+import main.OrderedProduct;
+import main.Product;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +15,7 @@ public abstract class BaseOrder {
     private String orderID;
     private double totalPrice;
     private List<OrderedProduct> orderedProducts;
-    private LocalDate orderDate;
+    private LocalDateTime orderDate;
     private String orderStatus;
     private boolean payment;
     private boolean delivered;
@@ -34,7 +39,7 @@ public abstract class BaseOrder {
         return totalPrice;
     }
 
-    public LocalDate getOrderDate() {
+    public LocalDateTime getOrderDate() {
         return orderDate;
     }
 
@@ -62,7 +67,7 @@ public abstract class BaseOrder {
     }
 
     public void updateOrderDate() {
-        orderDate = LocalDate.now();
+        orderDate = LocalDateTime.now();
     }
 
     public void updateOrderStatus(String newOrderStatus) {

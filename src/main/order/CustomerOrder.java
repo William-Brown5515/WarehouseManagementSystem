@@ -1,4 +1,6 @@
-package main;
+package main.order;
+
+import main.*;
 
 public class CustomerOrder extends BaseOrder {
     private Customer customer;

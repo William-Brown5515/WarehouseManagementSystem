@@ -1,4 +1,8 @@
-package main;
+package main.order;
+
+import main.*;
+
+import java.time.LocalDateTime;
 
 public class BusinessOrder extends BaseOrder {
     private Supplier supplier;
@@ -53,5 +57,14 @@ public class BusinessOrder extends BaseOrder {
         }
         updateDelivered(true);
         updateOrderStatus("Delivered");
+    }
+
+    public boolean deliveryTime() {
+        LocalDateTime now = LocalDateTime.now();
+        if (java.time.Duration.between(getOrderDate(), now).toMinutes() >= 1) {
+            updateOrderStatus("Arrived");
+            return true;
+        }
+        return false;
     }
 }
