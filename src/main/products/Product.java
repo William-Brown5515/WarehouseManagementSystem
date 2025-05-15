@@ -28,6 +28,7 @@ public class Product {
     public int getQuantity() { return quantity; }
     public double getCustomerPrice() { return customerPrice; }
     public double getSupplierPrice() { return supplierPrice; }
+    public Supplier getSupplier() { return supplier; }
 
     public void setQuantity(int quantity) { this.quantity = quantity; }
     public void setCustomerPrice(double customerPrice) { this.customerPrice = customerPrice; }

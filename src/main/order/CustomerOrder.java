@@ -1,19 +1,14 @@
 package main.order;
 
-import main.customer.Customer;
 import main.products.InventoryManager;
 import main.financial.FinancialReport;
 import main.products.Product;
 
 public class CustomerOrder extends BaseOrder {
-    private Customer customer;
 
-    public CustomerOrder(Customer customer, String orderID, FinancialReport report, InventoryManager inventory) {
-        super(orderID, report, inventory);
-        this.customer = customer;
+    public CustomerOrder(FinancialReport report, InventoryManager inventory) {
+        super(report, inventory);
     }
-
-    public Customer getCustomer() { return customer; }
 
     @Override
     protected void recalculateTotalPrice() {
@@ -26,7 +21,7 @@ public class CustomerOrder extends BaseOrder {
 
     @Override
     public void addItem(String ProductId, int Quantity) {
-        Product product = inventory.findProductById(ProductId);
+        Product product = inventory.getProductById(ProductId);
         if (product != null) {
             for (OrderedProduct orderedProduct : getOrderedProducts()) {
                 if (orderedProduct.getProduct().getProductID().equals(ProductId)) {
@@ -51,7 +46,6 @@ public class CustomerOrder extends BaseOrder {
 
     @Override
     public void completeOrder() {
-        updatePayment(true);
         getReport().orderRevenue(getTotalPrice());
         updateOrderStatus("Paid, being Delivered");
         updateOrderDate();

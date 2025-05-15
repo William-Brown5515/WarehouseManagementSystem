@@ -9,10 +9,12 @@ import java.time.LocalDateTime;
 
 public class BusinessOrder extends BaseOrder {
     private Supplier supplier;
+    private Boolean arrived;
 
-    public BusinessOrder(Supplier supplier, String orderID, FinancialReport report, InventoryManager inventory) {
-        super(orderID, report, inventory);
+    public BusinessOrder(Supplier supplier, FinancialReport report, InventoryManager inventory) {
+        super(report, inventory);
         this.supplier = supplier;
+        this.arrived = false;
     }
 
     public Supplier getSupplier() { return supplier; }
@@ -30,7 +32,7 @@ public class BusinessOrder extends BaseOrder {
     }
 
     public void addItem(String ProductId, int Quantity) {
-        Product product = inventory.findProductById(ProductId);
+        Product product = inventory.getProductById(ProductId);
         if (product != null) {
             for (OrderedProduct orderedProduct : getOrderedProducts()) {
                 if (orderedProduct.getProduct().getProductID().equals(ProductId)) {
@@ -45,7 +47,6 @@ public class BusinessOrder extends BaseOrder {
     }
 
     public void completeOrder() {
-        updatePayment(true);
         updateOrderStatus("Paid, being Delivered");
         updateOrderDate();
     }
@@ -62,10 +63,10 @@ public class BusinessOrder extends BaseOrder {
         updateOrderStatus("Delivered");
     }
 
-    public boolean deliveryTime() {
+    public Boolean isArrived() {
         LocalDateTime now = LocalDateTime.now();
         if (java.time.Duration.between(getOrderDate(), now).toMinutes() >= 1) {
-            updateOrderStatus("Arrived");
+            arrived = true;
             return true;
         }
         return false;

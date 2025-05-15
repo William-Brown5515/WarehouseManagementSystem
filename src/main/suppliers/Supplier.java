@@ -1,5 +1,7 @@
 package main.suppliers;
 
+import java.util.UUID;
+
 public class Supplier {
 
     private String name;
@@ -7,9 +9,9 @@ public class Supplier {
     private String email;
     private String phone;
 
-    public Supplier(String name, String supplierID, String email, String phone) {
+    public Supplier(String name, String email, String phone) {
         this.name = name;
-        this.supplierID = supplierID;
+        this.supplierID = UUID.randomUUID().toString().substring(0, 8).toUpperCase();;
         this.email = email;
         this.phone = phone;
     }
