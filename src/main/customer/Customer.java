@@ -1,4 +1,4 @@
-package main;
+package main.customer;
 
 public class Customer {
 

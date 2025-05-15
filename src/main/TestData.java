@@ -1,16 +1,24 @@
 package main;
 
+import main.customer.Customer;
+import main.customer.CustomerManager;
+import main.financial.FinancialReport;
 import main.order.BusinessOrder;
 import main.order.CustomerOrder;
+import main.products.InventoryManager;
+import main.products.Product;
+import main.products.ProductTypes;
+import main.suppliers.Supplier;
+import main.suppliers.SupplierManager;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class TestData {
 
-    public static void initialise(InventoryManager inventory, SupplierManager supplierManager) {
+    public static void initialise(InventoryManager inventory, main.suppliers.SupplierManager supplierManager) {
         // Add sample suppliers
-        List<Supplier> suppliers = Arrays.asList(
+        List<main.suppliers.Supplier> suppliers = Arrays.asList(
             new Supplier("Tools 4 U", "ID-745", "manager@tools4u.com", "01237856823"),
             new Supplier("XYZ Safety Gear", "ID-324", "xyz@safety.com", "01252528496"),
             new Supplier("Builders Supply Co.", "ID-567", "sales@buildersupply.com", "01254321123"),
@@ -24,9 +32,9 @@ public class TestData {
         }
 
         // Create list of products for each subclass and assign them to the appropriate supplier
-        List<Product> products = Arrays.asList(
+        List<main.products.Product> products = Arrays.asList(
                 // Tool products
-                new Product("Cordless Drill", "PROD123", 50, 120.00, 80.00, suppliers.get(0), ProductTypes.TOOL),
+                new Product("Cordless Drill", "PROD123", 50, 120.00, 80.00, suppliers.get(0), main.products.ProductTypes.TOOL),
                 new Product("Hammer", "PROD124", 150, 15.00, 10.00, suppliers.get(0), ProductTypes.TOOL),
                 new Product("Screwdriver Set", "PROD125", 200, 25.00, 15.00, suppliers.get(0), ProductTypes.TOOL),
                 new Product("Power Saw", "PROD126", 75, 250.00, 150.00, suppliers.get(1), ProductTypes.TOOL),
@@ -60,7 +68,7 @@ public class TestData {
         }
     }
 
-    private static CustomerOrder createOrder(Customer customer, String orderId, Object[][] items, FinancialReport report, InventoryManager inventory) {
+    private static CustomerOrder createOrder(Customer customer, String orderId, Object[][] items, main.financial.FinancialReport report, InventoryManager inventory) {
         CustomerOrder order = new CustomerOrder(customer, orderId, report, inventory);
         for (Object[] item : items) {
             String productId = (String) item[0];

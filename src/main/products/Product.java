@@ -1,4 +1,6 @@
-package main;
+package main.products;
+
+import main.Supplier;
 
 public class Product {
 

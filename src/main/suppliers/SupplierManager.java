@@ -1,4 +1,6 @@
-package main;
+package main.suppliers;
+
+import main.suppliers.Supplier;
 
 import java.util.ArrayList;
 import java.util.List;

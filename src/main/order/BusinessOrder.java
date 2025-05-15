@@ -1,6 +1,6 @@
 package main.order;
 
-import main.*;
+import main.products.InventoryManager;
 
 import java.time.LocalDateTime;
 

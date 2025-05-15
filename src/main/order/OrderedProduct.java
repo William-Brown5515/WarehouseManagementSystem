@@ -1,4 +1,6 @@
-package main;
+package main.order;
+
+import main.products.Product;
 
 public class OrderedProduct {
 

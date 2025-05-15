@@ -1,4 +1,6 @@
-package main;
+package main.products;
+
+import main.Product;
 
 import java.util.ArrayList;
 import java.util.List;

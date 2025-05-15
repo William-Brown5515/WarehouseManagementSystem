@@ -1,4 +1,4 @@
-package main;
+package main.suppliers;
 
 public class Supplier {
 
