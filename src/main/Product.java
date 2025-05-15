@@ -8,14 +8,16 @@ public class Product {
     private double customerPrice;
     private double supplierPrice;
     private Supplier supplier;
+    private String type;
 
-    public Product(String name, String productID, int quantity, double customerPrice, double supplierPrice, Supplier supplier) {
+    public Product(String name, String productID, int quantity, double customerPrice, double supplierPrice, Supplier supplier, String type) {
         this.name = name;
         this.productID = productID;
         this.quantity = quantity;
         this.customerPrice = customerPrice;
         this.supplierPrice = supplierPrice;
         this.supplier = supplier;
+        this.type = type;
     }
 
     // Getter and setters for the object
