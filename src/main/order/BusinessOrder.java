@@ -34,13 +34,6 @@ public class BusinessOrder extends BaseOrder {
     public void addItem(String ProductId, int Quantity) {
         Product product = inventory.getProductById(ProductId);
         if (product != null) {
-            for (OrderedProduct orderedProduct : getOrderedProducts()) {
-                if (orderedProduct.getProduct().getProductID().equals(ProductId)) {
-                    changeProductQuantity(orderedProduct, Quantity);
-                    recalculateTotalPrice();
-                    return;
-                }
-            }
             addOrderedProduct(new OrderedProduct(product, Quantity));
             recalculateTotalPrice();
         }

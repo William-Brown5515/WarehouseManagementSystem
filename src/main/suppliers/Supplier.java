@@ -11,7 +11,7 @@ public class Supplier {
 
     public Supplier(String name, String email, String phone) {
         this.name = name;
-        this.supplierID = UUID.randomUUID().toString().substring(0, 8).toUpperCase();;
+        this.supplierID = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         this.email = email;
         this.phone = phone;
     }
@@ -21,13 +21,7 @@ public class Supplier {
 
     public String getSupplierID() { return supplierID; }
 
-    public String getEmail() { return email; }
-
-    public String getPhone() { return phone; }
-
     public void setName(String name) { this.name = name; }
-
-    public void setSupplierID(String supplierID) { this.supplierID = supplierID; }
 
     public void setEmail(String email) { this.email = email; }
 
@@ -36,6 +30,6 @@ public class Supplier {
     // Overrides the default toString() method to provide readable summary of supplier details
     @Override
     public String toString() {
-        return "Supplier ID: " + supplierID + ", Name: " + name + ", Email: " + email;
+        return "Supplier ID: " + supplierID + ", Name: " + name + ", Email: " + email + ", Phone: " + phone ;
     }
 }

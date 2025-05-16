@@ -32,32 +32,32 @@ public class TestData {
         // Create list of products for each subclass and assign them to the appropriate supplier
         List<main.products.Product> products = Arrays.asList(
                 // Tool products
-                new Product("Cordless Drill", "PROD123", 50, 120.00, 80.00, suppliers.get(0), main.products.ProductTypes.TOOL),
-                new Product("Hammer", "PROD124", 150, 15.00, 10.00, suppliers.get(0), ProductTypes.TOOL),
-                new Product("Screwdriver Set", "PROD125", 200, 25.00, 15.00, suppliers.get(0), ProductTypes.TOOL),
-                new Product("Power Saw", "PROD126", 75, 250.00, 150.00, suppliers.get(1), ProductTypes.TOOL),
-                new Product("Angle Grinder", "PROD127", 120, 80.00, 60.00, suppliers.get(1), ProductTypes.TOOL),
+                new Product("Cordless Drill", 50, 120.00, 80.00, suppliers.get(0), main.products.ProductTypes.TOOL),
+                new Product("Hammer", 150, 15.00, 10.00, suppliers.get(0), ProductTypes.TOOL),
+                new Product("Screwdriver Set", 200, 25.00, 15.00, suppliers.get(0), ProductTypes.TOOL),
+                new Product("Power Saw", 75, 250.00, 150.00, suppliers.get(1), ProductTypes.TOOL),
+                new Product("Angle Grinder", 120, 80.00, 60.00, suppliers.get(1), ProductTypes.TOOL),
 
                 // Safety Equipment products
-                new Product("Safety Gloves", "PROD128", 200, 30.00, 20.00, suppliers.get(0), ProductTypes.SAFETY_EQUIPMENT),
-                new Product("Safety Glasses", "PROD129", 100, 50.00, 35.00, suppliers.get(0), ProductTypes.SAFETY_EQUIPMENT),
-                new Product("Ear Protection", "PROD130", 80, 45.00, 35.00, suppliers.get(1), ProductTypes.SAFETY_EQUIPMENT),
-                new Product("Knee Pads", "PROD131", 150, 35.00, 25.00, suppliers.get(1), ProductTypes.SAFETY_EQUIPMENT),
-                new Product("Respirator Mask", "PROD132", 50, 100.00, 75.00, suppliers.get(0), ProductTypes.SAFETY_EQUIPMENT),
+                new Product("Safety Gloves", 200, 30.00, 20.00, suppliers.get(0), ProductTypes.SAFETY_EQUIPMENT),
+                new Product("Safety Glasses", 100, 50.00, 35.00, suppliers.get(0), ProductTypes.SAFETY_EQUIPMENT),
+                new Product("Ear Protection", 80, 45.00, 35.00, suppliers.get(1), ProductTypes.SAFETY_EQUIPMENT),
+                new Product("Knee Pads", 150, 35.00, 25.00, suppliers.get(1), ProductTypes.SAFETY_EQUIPMENT),
+                new Product("Respirator Mask", 50, 100.00, 75.00, suppliers.get(0), ProductTypes.SAFETY_EQUIPMENT),
 
                 // Construction Material products
-                new Product("Cement", "PROD133", 300, 5.00, 3.00, suppliers.get(1), ProductTypes.CONSTRUCTION_MATERIAL),
-                new Product("Steel Bars", "PROD134", 100, 50.00, 40.00, suppliers.get(1), ProductTypes.CONSTRUCTION_MATERIAL),
-                new Product("Sand", "PROD135", 500, 10.00, 7.00, suppliers.get(0), ProductTypes.CONSTRUCTION_MATERIAL),
-                new Product("Bricks", "PROD136", 200, 50.00, 30.00, suppliers.get(2), ProductTypes.CONSTRUCTION_MATERIAL),
-                new Product("Gravel", "PROD137", 150, 15.00, 10.00, suppliers.get(3), ProductTypes.CONSTRUCTION_MATERIAL),
+                new Product("Cement", 300, 5.00, 3.00, suppliers.get(1), ProductTypes.CONSTRUCTION_MATERIAL),
+                new Product("Steel Bars", 100, 50.00, 40.00, suppliers.get(1), ProductTypes.CONSTRUCTION_MATERIAL),
+                new Product("Sand", 500, 10.00, 7.00, suppliers.get(0), ProductTypes.CONSTRUCTION_MATERIAL),
+                new Product("Bricks", 200, 50.00, 30.00, suppliers.get(2), ProductTypes.CONSTRUCTION_MATERIAL),
+                new Product("Gravel", 150, 15.00, 10.00, suppliers.get(3), ProductTypes.CONSTRUCTION_MATERIAL),
 
                 // Machinery products
-                new Product("Excavator", "PROD138", 10, 25000.00, 18000.00, suppliers.get(0), ProductTypes.MACHINERY),
-                new Product("Forklift", "PROD139", 5, 15000.00, 11000.00, suppliers.get(2), ProductTypes.MACHINERY),
-                new Product("Bulldozer", "PROD140", 3, 45000.00, 35000.00, suppliers.get(4), ProductTypes.MACHINERY),
-                new Product("Crane", "PROD141", 2, 100000.00, 75000.00, suppliers.get(3), ProductTypes.MACHINERY),
-                new Product("Backhoe Loader", "PROD142", 8, 30000.00, 22000.00, suppliers.get(1), ProductTypes.MACHINERY)
+                new Product("Excavator", 10, 25000.00, 18000.00, suppliers.get(0), ProductTypes.MACHINERY),
+                new Product("Forklift", 5, 15000.00, 11000.00, suppliers.get(2), ProductTypes.MACHINERY),
+                new Product("Bulldozer", 3, 45000.00, 35000.00, suppliers.get(4), ProductTypes.MACHINERY),
+                new Product("Crane", 2, 100000.00, 75000.00, suppliers.get(3), ProductTypes.MACHINERY),
+                new Product("Backhoe Loader", 8, 30000.00, 22000.00, suppliers.get(1), ProductTypes.MACHINERY)
         );
 
         // Add products to inventory

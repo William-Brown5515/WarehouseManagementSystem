@@ -29,24 +29,31 @@ public class OrderManager {
         return null;
     }
 
-    public List<CustomerOrder> getCustomerOrders() {
-        List<CustomerOrder> customerOrders = new ArrayList<>();
+    public void displayCustomerOrders() {
         for (BaseOrder order : orders) {
             if (order instanceof CustomerOrder) {
-                customerOrders.add((CustomerOrder) order);
+                printOrders((CustomerOrder) order);
             }
         }
-        return customerOrders;
     }
 
-    public List<BusinessOrder> getBusinessOrders() {
-        List<BusinessOrder> businessOrders = new ArrayList<>();
+    public void displayBusinessOrders() {
         for (BaseOrder order : orders) {
             if (order instanceof BusinessOrder) {
-                businessOrders.add((BusinessOrder) order);
+                printOrders((BusinessOrder) order);
             }
         }
-        return businessOrders;
+    }
+
+    private void printOrders(BaseOrder order) {
+        System.out.println("Order ID: " + order.getOrderID() + "Order Status: " + order.getOrderStatus() + "Order Date: " + order.getOrderDate());
+        if (order.getOrderedProducts().isEmpty()) {
+            System.out.println("This order is empty");
+        } else {
+            for (OrderedProduct product : order.getOrderedProducts()) {
+                System.out.println("Product name: " + product.getProduct().getName() + ", Quantity: " + product.getQuantity());
+            }
+        }
     }
 
     public List<BusinessOrder> updateArrivalStatus() {
