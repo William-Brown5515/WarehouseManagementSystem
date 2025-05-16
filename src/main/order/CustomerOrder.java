@@ -23,21 +23,11 @@ public class CustomerOrder extends BaseOrder {
     public void addItem(String ProductId, int Quantity) {
         Product product = inventory.getProductById(ProductId);
         if (product != null) {
-            for (OrderedProduct orderedProduct : getOrderedProducts()) {
-                if (orderedProduct.getProduct().getProductID().equals(ProductId)) {
-                    if (product.getQuantity() >= (Quantity + orderedProduct.getQuantity())) {
-                        changeProductQuantity(orderedProduct, Quantity);
-                        recalculateTotalPrice();
-                        inventory.reduceStock(ProductId, Quantity);
-                        return;
-                    }
-                }
-            }
             if (product.getQuantity() >= Quantity) {
-                System.out.println("Ordered. Product: " + product + ", Quantity: " + Quantity + ", Amount in stock: " + product.getQuantity());
                 addOrderedProduct(new OrderedProduct(product, Quantity));
-                recalculateTotalPrice();
                 inventory.reduceStock(ProductId, Quantity);
+                System.out.println("Ordered. Product: " + product + ", Quantity: " + Quantity + ", Amount in stock: " + product.getQuantity());
+                recalculateTotalPrice();
             }
         } else {
             System.out.println("Product not found");

@@ -2,6 +2,8 @@ package main.products;
 
 import main.suppliers.Supplier;
 
+import java.util.UUID;
+
 public class Product {
 
     private String name;
@@ -12,9 +14,9 @@ public class Product {
     private Supplier supplier;
     private String type;
 
-    public Product(String name, String productID, int quantity, double customerPrice, double supplierPrice, Supplier supplier, String type) {
+    public Product(String name, int quantity, double customerPrice, double supplierPrice, Supplier supplier, String type) {
         this.name = name;
-        this.productID = productID;
+        this.productID = UUID.randomUUID().toString().substring(0, 8).toUpperCase();;
         this.quantity = quantity;
         this.customerPrice = customerPrice;
         this.supplierPrice = supplierPrice;
@@ -30,6 +32,7 @@ public class Product {
     public double getSupplierPrice() { return supplierPrice; }
     public Supplier getSupplier() { return supplier; }
 
+    public void setName(String newName) { name = newName; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
     public void setCustomerPrice(double customerPrice) { this.customerPrice = customerPrice; }
     public void setSupplierPrice(double supplierPrice) { this.supplierPrice = supplierPrice; }
@@ -37,6 +40,6 @@ public class Product {
     // Overrides the default toString() method to provide readable summary of product details
     @Override
     public String toString() {
-        return "Product Name: " + name + ", Product ID: " + productID + ", Quantity: " + quantity + ", Consumer Price: " + customerPrice + ", Supplier Price: " + supplierPrice;
+        return "Product Name: " + name + ", Product ID: " + productID + ", Quantity: " + quantity + ", Customer Price: " + customerPrice + ", Supplier Price: " + supplierPrice;
     }
 }

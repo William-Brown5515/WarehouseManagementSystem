@@ -22,7 +22,7 @@ public class InventoryManager {
     // A method which lists all the products
     public void listProducts() {
         for (Product product : products) {
-            System.out.println(product);
+            System.out.println(product.toString());
         }
     }
 

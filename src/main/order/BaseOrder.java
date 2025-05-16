@@ -77,46 +77,47 @@ public abstract class BaseOrder {
         recalculateTotalPrice();
     }
 
-    protected void changeProductQuantity(OrderedProduct orderedProduct, int quantity) {
-        if (quantity != orderedProduct.getQuantity()) {
-            orderedProduct.setQuantity(quantity + orderedProduct.getQuantity());
-            recalculateTotalPrice();
+    public void changeProductQuantity(Product product, int quantity) {
+        for (OrderedProduct orderedProduct : orderedProducts) {
+            if (orderedProduct.getProduct().equals(product)) {
+                orderedProduct.setQuantity(quantity);
+            }
         }
     }
 
     public abstract void addItem(String ProductId, int Quantity);
 
-    public boolean removeItem(String ProductID, Integer Quantity) {
+    public boolean removeItem(String ProductID) {
 
         // Check whether the product exists
         Product product = inventory.getProductById(ProductID);
-
-        if (product != null) {
-
-            // Iterate through the products to check if the product has already been added to basket
-            Iterator<OrderedProduct> iterator = getOrderedProducts().iterator();
-            while (iterator.hasNext()) {
-                OrderedProduct orderedProduct = iterator.next();
-                if (orderedProduct.getProduct().getProductID().equals(ProductID)) {
-                    if (orderedProduct.getQuantity() <= Quantity) {
-                        // Update the ordered quantity
-                        iterator.remove();
-                    } else {
-                        // Update the ordered quantity
-                        orderedProduct.setQuantity(orderedProduct.getQuantity() - Quantity);
-                    }
-                    recalculateTotalPrice();
-                    return true;
-                }
+        for (OrderedProduct orderedProduct : orderedProducts) {
+            if (orderedProduct.getProduct().equals(product)) {
+                orderedProducts.remove(orderedProduct);
+                recalculateTotalPrice();
+                return true;
             }
         }
         return false;
     }
 
     public void currentOrder() {
-        for (OrderedProduct product: orderedProducts) {
-            System.out.println("Product name: " + product.getProduct().getName() + ", Quantity: " + product.getQuantity());
+        if (orderedProducts.isEmpty()) {
+            System.out.println("Your order is empty");
+        } else {
+            for (OrderedProduct product : orderedProducts) {
+                System.out.println("Product name: " + product.getProduct().getName() + ", Quantity: " + product.getQuantity());
+            }
         }
+    }
+
+    public int currentQuantity (Product product) {
+        for (OrderedProduct orderedProduct : orderedProducts) {
+            if (orderedProduct.getProduct().getProductID().equals(product.getProductID())) {
+                return orderedProduct.getQuantity();
+            }
+        }
+        return 0;
     }
 
     // Placeholders to utilise polymorphism
