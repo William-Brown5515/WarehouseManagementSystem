@@ -68,7 +68,7 @@ public class CustomerOrderService {
                 } else {
                     // Otherwise update quantity to new value
                     order.changeProductQuantity(product, quantity);
-                    System.out.println("Product quantity updated.");
+                    System.out.println("Product quantity updated. Current order price: " + order.getTotalPrice());
                 }
                 continue;
             }
@@ -87,6 +87,7 @@ public class CustomerOrderService {
 
             // Add the specified quantity of product to the order
             order.addItem(productID, quantityToAdd);
+            System.out.println("Product added. Current order total: " + order.getTotalPrice());
         }
     }
 

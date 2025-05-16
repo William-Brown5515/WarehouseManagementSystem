@@ -68,10 +68,10 @@ public class SupplierOrderService {
                 int quantity = readPositiveInt(scanner);
                 if (quantity == 0) {
                     order.removeItem(productID);
-                    System.out.println("Product removed from the order.");
+                    System.out.println("Product removed from the order. Current order price: " + order.getTotalPrice());
                 } else {
                     order.changeProductQuantity(product, quantity);
-                    System.out.println("Product quantity updated.");
+                    System.out.println("Product quantity updated. Current order price: " + order.getTotalPrice());
                 }
 
             } else {
@@ -87,7 +87,7 @@ public class SupplierOrderService {
                 }
 
                 order.addItem(productID, quantityToAdd);
-                System.out.println("Product added to order.");
+                System.out.println("Product added to order. Current order price: " + order.getTotalPrice());
             }
         }
     }
