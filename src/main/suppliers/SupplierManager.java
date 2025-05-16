@@ -1,32 +1,34 @@
 package main.suppliers;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 // A class to manage the suppliers
 public class SupplierManager {
-    static List<Supplier> suppliers;
+    List<Supplier> suppliers;
 
     // The constructor, to initialise the supplier list
     public SupplierManager() {
-        suppliers = new ArrayList<Supplier>();
+        suppliers = new ArrayList<>();
     }
 
-    // A method to add a new supplier
-    public static void addSupplier(Supplier supplier) {
+    // A method to add a new supplier, features null verification
+    public void addSupplier(Supplier supplier) {
+        if (supplier == null) {
+            throw new IllegalArgumentException("Supplier cannot be null.");
+        }
         suppliers.add(supplier);
     }
 
     // A method to remove a supplier by their ID
-    public boolean removeSupplier(String supplierID) {
-        for (Supplier supplier : suppliers) {
-            if (supplier.getSupplierID().equals(supplierID)) {
-                suppliers.remove(supplier);
-                return true;
-            }
+    public void removeSupplier(String supplierID) {
+        if (supplierID == null || supplierID.trim().isEmpty()) {
+            throw new IllegalArgumentException("Supplier ID cannot be null or empty.");
         }
-        return false;
+        suppliers.removeIf(supplier -> supplier.getSupplierID().equals(supplierID));
     }
+
 
     // A method to return a supplier that matches the given ID
     public Supplier getSupplier(String supplierID) {
@@ -43,16 +45,5 @@ public class SupplierManager {
         for (Supplier supplier : suppliers) {
             System.out.println(supplier.toString());
         }
-    }
-
-    public boolean updateSupplierDetails(String supplierID, String name, String phone, String email) {
-        Supplier supplier = getSupplier(supplierID);
-        if (supplier != null) {
-            supplier.setName(name);
-            supplier.setPhone(phone);
-            supplier.setEmail(email);
-            return true;
-        }
-        return false;
     }
 }

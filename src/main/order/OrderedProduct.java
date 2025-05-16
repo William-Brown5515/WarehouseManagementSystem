@@ -8,15 +8,27 @@ public class OrderedProduct {
     private int quantity;
 
     public OrderedProduct(Product product, int quantity) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0");
+        }
         this.product = product;
         this.quantity = quantity;
     }
 
+    // Class getters and setters
     public Product getProduct() { return product; }
 
     public int getQuantity() { return quantity; }
 
-    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public void setQuantity(int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0");
+        }
+        this.quantity = quantity;
+    }
 
     @Override
     public String toString() {

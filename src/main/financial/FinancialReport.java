@@ -10,11 +10,20 @@ public class FinancialReport {
     public double getPurchaseCosts() { return purchaseCosts; }
 
     public void orderCost(double cost) {
+        // Validate input
+        if (cost < 0) {
+            throw new IllegalArgumentException("Cost cannot be negative.");
+        }
+
         purchaseCosts += cost;
         currentMoney -= cost;
     }
 
     public void orderRevenue(double revenue) {
+        // Validate input
+        if (revenue < 0) {
+            throw new IllegalArgumentException("Revenue cannot be negative.");
+        }
         salesRevenue += revenue;
         currentMoney += revenue;
     }

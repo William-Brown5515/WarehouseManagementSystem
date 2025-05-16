@@ -27,7 +27,7 @@ class OrderManagerTest {
 
     @Test
     void testAddOrder() {
-        BusinessOrder order = new BusinessOrder(new Supplier("Test Supplier", "test@email.com", "00000000000"), new FinancialReport(), new InventoryManager()) {
+        BusinessOrder order = new BusinessOrder(new FinancialReport(), new InventoryManager()) {
             @Override
             public Boolean isArrived() {
                 return true;
@@ -70,7 +70,6 @@ class OrderManagerTest {
         Supplier supplier = new Supplier("Test Supplier", "test@email.com", "00000000000");
         InventoryManager inventory = new InventoryManager();
         BusinessOrder order = new BusinessOrder(
-                supplier,
                 new FinancialReport(),
                 inventory
         );
@@ -127,7 +126,7 @@ class OrderManagerTest {
         InventoryManager inventory = new InventoryManager();
 
         // Order 1: Arrived and not delivered - should be included
-        BusinessOrder order1 = new BusinessOrder(supplier, new FinancialReport(), inventory) {
+        BusinessOrder order1 = new BusinessOrder(new FinancialReport(), inventory) {
             @Override
             public Boolean isArrived() { return true; }
             @Override
@@ -135,7 +134,7 @@ class OrderManagerTest {
         };
 
         // Order 2: Arrived and delivered - should NOT be included
-        BusinessOrder order2 = new BusinessOrder(supplier, new FinancialReport(), inventory) {
+        BusinessOrder order2 = new BusinessOrder(new FinancialReport(), inventory) {
             @Override
             public Boolean isArrived() { return true; }
             @Override
@@ -143,7 +142,7 @@ class OrderManagerTest {
         };
 
         // Order 3: Not arrived - should NOT be included
-        BusinessOrder order3 = new BusinessOrder(supplier, new FinancialReport(), inventory) {
+        BusinessOrder order3 = new BusinessOrder(new FinancialReport(), inventory) {
             @Override
             public Boolean isArrived() { return false; }
             @Override

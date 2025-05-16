@@ -17,9 +17,16 @@ public class ProductTypes {
             "Machinery"
     ));
 
+    // Create a product type
     public static void addProductType(String type) {
+        // Checks to ensure the parameter is as expected
+        if (type == null || type.trim().isEmpty()) {
+            throw new IllegalArgumentException("Product type cannot be null or empty.");
+        }
         if (!containsIgnoreCase(type)) {
             TYPES.add(type);
+        } else {
+            throw new IllegalArgumentException("Product type '" + type + "' already exists.");
         }
     }
 

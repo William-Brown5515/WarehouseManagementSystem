@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public abstract class BaseOrder {
 
-    private String orderID;
+    private final String orderID;
     private double totalPrice;
     private List<OrderedProduct> orderedProducts;
     private LocalDateTime orderDate;
@@ -72,51 +72,78 @@ public abstract class BaseOrder {
         delivered = deliveredStatus;
     }
 
+    // A method to add a product to an order
     protected void addOrderedProduct(OrderedProduct newProduct) {
+        // Ensure the product exists
+        if (newProduct == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
+        // Add the product to the order and update the price
         orderedProducts.add(newProduct);
         recalculateTotalPrice();
     }
 
+    // A method to change the quantity of a product already in the basket
     public void changeProductQuantity(Product product, int quantity) {
         for (OrderedProduct orderedProduct : orderedProducts) {
             if (orderedProduct.getProduct().equals(product)) {
+                int oldQuantity = orderedProduct.getQuantity();
+                if (oldQuantity < quantity) {
+                    inventory.reduceStock(orderedProduct.getProduct().getProductID(), quantity - oldQuantity);
+                } else if (oldQuantity > quantity) {
+                    inventory.addStock(orderedProduct.getProduct().getProductID(), oldQuantity - quantity);
+                }
                 orderedProduct.setQuantity(quantity);
+                return;
             }
         }
+        // Throw error if the product does not exist
+        throw new IllegalArgumentException("Product not found in the order");
     }
 
+    // Abstract class as this is different for different order types
     public abstract void addItem(String ProductId, int Quantity);
 
-    public boolean removeItem(String ProductID) {
-
+    public void removeItem(String ProductID) {
         // Check whether the product exists
         Product product = inventory.getProductById(ProductID);
-        for (OrderedProduct orderedProduct : orderedProducts) {
+
+        // Use an iterator, rather than a for loop, to avoid concurrentModificationException
+        Iterator<OrderedProduct> iterator = orderedProducts.iterator();
+        while (iterator.hasNext()) {
+            OrderedProduct orderedProduct = iterator.next();
             if (orderedProduct.getProduct().equals(product)) {
-                orderedProducts.remove(orderedProduct);
+                // Remove the product from the order, update stock level and update the price
+                inventory.addStock(orderedProduct.getProduct().getProductID(), orderedProduct.getQuantity());
+                iterator.remove();
                 recalculateTotalPrice();
-                return true;
+                return;
             }
         }
-        return false;
     }
 
+    // A method which displays the current order information
     public void currentOrder() {
+        // Checks if the order is empty
         if (orderedProducts.isEmpty()) {
             System.out.println("Your order is empty");
         } else {
+            // Loops through products and displays the information
             for (OrderedProduct product : orderedProducts) {
                 System.out.println("Product name: " + product.getProduct().getName() + ", Quantity: " + product.getQuantity());
             }
         }
     }
 
+    // A method to check the current quantity of a product in the order
     public int currentQuantity (Product product) {
+        if (product == null) return 0;
         for (OrderedProduct orderedProduct : orderedProducts) {
             if (orderedProduct.getProduct().getProductID().equals(product.getProductID())) {
                 return orderedProduct.getQuantity();
             }
         }
+        // Returns 0 if product not found
         return 0;
     }
 
