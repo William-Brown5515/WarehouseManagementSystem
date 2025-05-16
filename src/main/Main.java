@@ -13,6 +13,7 @@ import main.suppliers.*;
 import main.financial.*;
 
 public class Main {
+    // Shared scanner and core system managers
     private static final Scanner scanner = new Scanner(System.in);
     private static final SupplierManager supplierManager = new SupplierManager();
     private static final InventoryManager inventory = new InventoryManager();
@@ -20,7 +21,9 @@ public class Main {
     private static final OrderManager orderManager = new OrderManager();
 
     public static void main(String[] args) {
+        // Seed initial test data
         TestData.initialise(inventory, supplierManager);
+
         boolean running = true;
         while (running) {
             System.out.println("\n=== Warehouse Management System ===");
@@ -29,7 +32,7 @@ public class Main {
             System.out.println("3. Exit");
             System.out.print("Enter choice: ");
 
-            switch (scanner.nextLine()) {
+            switch (scanner.nextLine().trim()) {
                 case "1":
                     ownerMenu();
                     break;
@@ -43,14 +46,18 @@ public class Main {
                     System.out.println("Invalid choice. Try again.");
             }
         }
+
         System.out.println("Goodbye!");
     }
 
+    // Owner mode: full system management access
     private static void ownerMenu() {
         boolean ownerRunning = true;
+
         while (ownerRunning) {
             List<Product> lowStockItems = inventory.lowStock();
             List<BusinessOrder> arrivedOrders = orderManager.updateArrivalStatus();
+
             System.out.println("\n--- Owner Mode ---");
             System.out.println("0. Back to Main Menu");
             System.out.println("1. View Stock Levels");
@@ -59,15 +66,18 @@ public class Main {
             System.out.println("4. View/Manage Products");
             System.out.println("5. Manage Suppliers");
             System.out.println("6. View Order History");
+
+            // Contextual options if low stock or incoming deliveries exist
             if (!lowStockItems.isEmpty()) {
                 System.out.println("7. View Low Stock Levels: " + lowStockItems.size() + " Products");
             }
             if (!arrivedOrders.isEmpty()) {
                 System.out.println("8. Accept Incoming Order Arrivals: " + arrivedOrders.size() + " Deliveries");
             }
+
             System.out.print("Enter choice: ");
 
-            switch (scanner.nextLine()) {
+            switch (scanner.nextLine().trim()) {
                 case "0":
                     ownerRunning = false;
                     break;
@@ -106,8 +116,10 @@ public class Main {
         }
     }
 
+    // Customer menu: placing/viewing personal orders
     private static void customerMenu() {
         boolean customerRunning = true;
+
         while (customerRunning) {
             System.out.println("\n--- Customer Mode ---");
             System.out.println("1. Place New Order");
@@ -115,7 +127,7 @@ public class Main {
             System.out.println("3. Back to Main Menu");
             System.out.print("Enter choice: ");
 
-            switch (scanner.nextLine()) {
+            switch (scanner.nextLine().trim()) {
                 case "1":
                     CustomerOrderService.orderFromWarehouse(orderManager, inventory, report, supplierManager, scanner);
                     break;
@@ -131,8 +143,10 @@ public class Main {
         }
     }
 
+    // Supplier management options
     private static void supplierMenu() {
         boolean supplierRunning = true;
+
         while (supplierRunning) {
             System.out.println("\n--- Supplier Menu ---");
             System.out.println("1. View Suppliers");
@@ -142,7 +156,7 @@ public class Main {
             System.out.println("5. Back to Owner Menu");
             System.out.print("Enter choice: ");
 
-            switch (scanner.nextLine()) {
+            switch (scanner.nextLine().trim()) {
                 case "1":
                     supplierManager.displaySuppliers();
                     break;
@@ -164,18 +178,20 @@ public class Main {
         }
     }
 
+    // Product management options
     private static void productMenu() {
         boolean productRunning = true;
+
         while (productRunning) {
             System.out.println("\n--- Product Menu ---");
-            System.out.println("1. View All Product");
+            System.out.println("1. View All Products");
             System.out.println("2. Add a Product");
             System.out.println("3. Delete a Product");
             System.out.println("4. Modify Product Details");
             System.out.println("5. Back to Owner Menu");
             System.out.print("Enter choice: ");
 
-            switch (scanner.nextLine()) {
+            switch (scanner.nextLine().trim()) {
                 case "1":
                     inventory.listProducts();
                     break;

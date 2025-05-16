@@ -1,46 +1,50 @@
 package main.order;
 
 import main.products.InventoryManager;
-import main.suppliers.Supplier;
 import main.financial.FinancialReport;
 import main.products.Product;
-import main.suppliers.SupplierManager;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class BusinessOrder extends BaseOrder {
-    private Supplier supplier;
-    private Boolean arrived;
 
-    public BusinessOrder(Supplier supplier, FinancialReport report, InventoryManager inventory) {
+    public BusinessOrder(FinancialReport report, InventoryManager inventory) {
         super(report, inventory);
-        this.supplier = supplier;
-        this.arrived = false;
     }
 
     @Override
     protected void recalculateTotalPrice() {
         double newTotal = 0;
+        // Cycle through each ordered product and add the prices to the total
         for (OrderedProduct orderedProduct : getOrderedProducts()) {
             Product product = orderedProduct.getProduct();
             int quantity = orderedProduct.getQuantity();
             double supplierPrice = product.getSupplierPrice();
             newTotal += supplierPrice * quantity;
         }
+        // Set the new total price
         updateTotalPrice(newTotal);
     }
 
     public void addItem(String ProductId, int Quantity) {
-        Product product = inventory.getProductById(ProductId);
-//        System.out.println("Product ID: " + product.getProductID() + " Quantity: " + Quantity);
-        if (product != null) {
-            addOrderedProduct(new OrderedProduct(product, Quantity));
-            recalculateTotalPrice();
+        // Check if quantity is greater than 0
+        if (Quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0");
         }
+
+        // Ensure the product exists
+        Product product = inventory.getProductById(ProductId);
+        if (product == null) {
+            throw new IllegalArgumentException("Product with id " + ProductId + " already exists");
+        }
+
+        // Add the product to the order and recalculate the price
+        addOrderedProduct(new OrderedProduct(product, Quantity));
+        recalculateTotalPrice();
     }
 
     public void completeOrder() {
+        // Update the status when the order is confirmed
         updateOrderStatus("Paid, being Delivered");
         updateOrderDate();
     }
@@ -53,16 +57,21 @@ public class BusinessOrder extends BaseOrder {
         for (OrderedProduct orderedProduct : getOrderedProducts()) {
             inventory.addStock(orderedProduct.getProduct().getProductID(), orderedProduct.getQuantity());
         }
+
+        // Update relevant fields for future queries
         updateDelivered(true);
         updateOrderStatus("Delivered");
     }
 
     public Boolean isArrived() {
-        LocalDateTime now = LocalDateTime.now();
-        if (java.time.Duration.between(getOrderDate(), now).toMinutes() >= 1) {
-            arrived = true;
-            return true;
+        // Collect the order date, and ensure it has been defined
+        LocalDateTime orderDate = getOrderDate();
+        if (orderDate == null) {
+            return false;
         }
-        return false;
+
+        // Confirm whether the order has arrived and is ready for delivery to be completed
+        LocalDateTime now = LocalDateTime.now();
+        return java.time.Duration.between(getOrderDate(), now).toMinutes() >= 1;
     }
 }
