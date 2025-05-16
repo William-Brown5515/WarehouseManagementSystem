@@ -4,8 +4,10 @@ import main.products.InventoryManager;
 import main.suppliers.Supplier;
 import main.financial.FinancialReport;
 import main.products.Product;
+import main.suppliers.SupplierManager;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class BusinessOrder extends BaseOrder {
     private Supplier supplier;
@@ -16,8 +18,6 @@ public class BusinessOrder extends BaseOrder {
         this.supplier = supplier;
         this.arrived = false;
     }
-
-    public Supplier getSupplier() { return supplier; }
 
     @Override
     protected void recalculateTotalPrice() {
@@ -33,6 +33,7 @@ public class BusinessOrder extends BaseOrder {
 
     public void addItem(String ProductId, int Quantity) {
         Product product = inventory.getProductById(ProductId);
+//        System.out.println("Product ID: " + product.getProductID() + " Quantity: " + Quantity);
         if (product != null) {
             addOrderedProduct(new OrderedProduct(product, Quantity));
             recalculateTotalPrice();

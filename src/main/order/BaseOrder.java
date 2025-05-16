@@ -19,7 +19,7 @@ public abstract class BaseOrder {
     private String orderStatus;
     private boolean delivered;
     protected InventoryManager inventory;
-    private FinancialReport report;
+    protected FinancialReport report;
 
     public BaseOrder(FinancialReport report, InventoryManager inventory) {
         this.orderedProducts = new ArrayList<OrderedProduct>();
