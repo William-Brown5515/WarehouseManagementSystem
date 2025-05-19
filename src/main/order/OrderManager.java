@@ -8,7 +8,7 @@ public class OrderManager {
     private List<BaseOrder> orders;
 
     public OrderManager() {
-        this.orders = new ArrayList<BaseOrder>();
+        this.orders = new ArrayList<>();
     }
 
     public void addOrder(BaseOrder order) {

@@ -22,7 +22,7 @@ public abstract class BaseOrder {
     protected FinancialReport report;
 
     public BaseOrder(FinancialReport report, InventoryManager inventory) {
-        this.orderedProducts = new ArrayList<OrderedProduct>();
+        this.orderedProducts = new ArrayList<>();
         this.orderID = "ORD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         this.totalPrice = 0.0;
         this.orderDate = null;

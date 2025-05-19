@@ -64,7 +64,7 @@ public class SupplierManagementService {
 
                 // Modification loop
                 while (supplierRunning) {
-                    System.out.println(supplier.toString());
+                    System.out.println(supplier);
                     System.out.println("1. Modify Supplier Name");
                     System.out.println("2. Modify Supplier Email");
                     System.out.println("3. Modify Supplier Phone");

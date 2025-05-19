@@ -3,7 +3,6 @@ package main.products;
 import main.suppliers.Supplier;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 // A Class to manage the inventory
@@ -12,7 +11,7 @@ public class InventoryManager {
 
     // The constructor, which creates an empty ArrayList on object creation
     public InventoryManager() {
-        this.products = new ArrayList<Product>();
+        this.products = new ArrayList<>();
     }
 
     // A method to add a new product to the List

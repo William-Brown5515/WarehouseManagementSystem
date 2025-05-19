@@ -5,10 +5,6 @@ public class FinancialReport {
     private double salesRevenue = 0.0;
     private double purchaseCosts = 0.0;
 
-    public double getCurrentMoney() { return currentMoney; }
-    public double getSalesRevenue() { return salesRevenue; }
-    public double getPurchaseCosts() { return purchaseCosts; }
-
     public void orderCost(double cost) {
         // Validate input
         if (cost < 0) {

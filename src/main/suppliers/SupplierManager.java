@@ -1,7 +1,6 @@
 package main.suppliers;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 // A class to manage the suppliers
