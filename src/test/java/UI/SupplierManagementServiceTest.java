@@ -12,6 +12,7 @@ public class SupplierManagementServiceTest {
 
     @Test
     public void testCreateSupplier() {
+        // Test creating a supplier successfully adds it to SupplierManager
         System.out.println("Running testCreateSupplier...");
 
         SupplierManager sm = new SupplierManager();
@@ -32,6 +33,7 @@ public class SupplierManagementServiceTest {
 
     @Test
     public void testModifySupplier() {
+        // Test modifying supplier updates the supplier's details correctly
         System.out.println("Running testModifySupplier...");
 
         SupplierManager sm = new SupplierManager();
@@ -54,6 +56,7 @@ public class SupplierManagementServiceTest {
 
     @Test
     public void testDeleteSupplier() {
+        // Test deleting a supplier removes it from SupplierManager
         System.out.println("Running testDeleteSupplier...");
 
         SupplierManager sm = new SupplierManager();

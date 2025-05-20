@@ -34,7 +34,7 @@ class CustomerOrderTest {
 
     @Test
     void testAddItem_productNotFound_throws() {
-        // Ensure a relevant exception is thrown when given an invalid product ID
+        // Verify addItem throws IllegalArgumentException if product ID does not exist
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> order.addItem("invalidId", 1));
         assertEquals("Product not found", ex.getMessage());
@@ -42,7 +42,7 @@ class CustomerOrderTest {
 
     @Test
     void testAddItem_insufficientStock_throws() {
-        // Ensure a relevant exception is thrown when not enough stock available
+        // Verify addItem throws IllegalArgumentException if requested quantity exceeds stock
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> order.addItem(product.getProductID(), 20));
         assertEquals("Insufficient stock for product " + product.getName(), ex.getMessage());
@@ -50,7 +50,7 @@ class CustomerOrderTest {
 
     @Test
     void testAddItem_zeroOrNegativeQuantity_throws() {
-        // Ensure a relevant exception is thrown when quantity is zero or negative
+        // Verify addItem throws IllegalArgumentException if quantity is zero or negative
         IllegalArgumentException exZero = assertThrows(IllegalArgumentException.class,
                 () -> order.addItem(product.getProductID(), 0));
         assertTrue(exZero.getMessage().contains("Negative quantity"));
@@ -62,25 +62,22 @@ class CustomerOrderTest {
 
     @Test
     void testAddItem_success() {
-        // Ensure an item is successfully added to the order
+        // Verify addItem successfully adds product, updates stock and total price
         order.addItem(product.getProductID(), 3);
 
-        // Check orderedProducts size
         assertEquals(1, order.getOrderedProducts().size());
         OrderedProduct orderedProduct = order.getOrderedProducts().getFirst();
         assertEquals(product, orderedProduct.getProduct());
         assertEquals(3, orderedProduct.getQuantity());
 
-        // Check stock reduced in inventory stub
         assertEquals(7, inventory.getProductById(product.getProductID()).getQuantity());
 
-        // Check total price updated (3 * 8.0)
         assertEquals(24.0, order.getTotalPrice(), 0.001);
     }
 
     @Test
     void testRecalculateTotalPrice_correctCalculation() {
-        // Ensure that the order recalculates the total price correctly
+        // Verify total price calculation after multiple ordered products added
         order.addOrderedProduct(new OrderedProduct(product, 2));
         order.addOrderedProduct(new OrderedProduct(product, 3));
         order.recalculateTotalPrice();
@@ -90,7 +87,7 @@ class CustomerOrderTest {
 
     @Test
     void testCompleteOrder_updatesStateAndCallsReport() {
-        // Ensure the order is completed and date noted
+        // Verify order completion updates status and records order date
         order.completeOrder();
 
         assertEquals("Paid, being Delivered", order.getOrderStatus());
@@ -99,7 +96,7 @@ class CustomerOrderTest {
 
     @Test
     void testDeliverOrder_updatesStatusAndDeliveredFlag() {
-        // Ensures the correct attributes are updated when an order is delivered
+        // Verify deliverOrder marks order delivered and updates order status
         order.deliverOrder();
 
         assertTrue(order.isDelivered());

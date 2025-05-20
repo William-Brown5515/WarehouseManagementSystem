@@ -22,17 +22,20 @@ public class SupplierManagerTest {
 
     @Test
     void addSupplier_valid_addsSupplier() {
+        // Verify adding a valid supplier stores it correctly
         manager.addSupplier(supplier1);
         assertEquals(supplier1, manager.getSupplier(supplier1.getSupplierID()));
     }
 
     @Test
     void addSupplier_null_throwsException() {
+        // Verify adding null supplier throws IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> manager.addSupplier(null));
     }
 
     @Test
     void removeSupplier_valid_removesSupplier() {
+        // Verify removing an existing supplier deletes it from the manager
         manager.addSupplier(supplier1);
         manager.addSupplier(supplier2);
         manager.removeSupplier(supplier1.getSupplierID());
@@ -42,6 +45,7 @@ public class SupplierManagerTest {
 
     @Test
     void removeSupplier_nullOrEmpty_throwsException() {
+        // Verify removing with null or empty ID throws IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> manager.removeSupplier(null));
         assertThrows(IllegalArgumentException.class, () -> manager.removeSupplier(""));
         assertThrows(IllegalArgumentException.class, () -> manager.removeSupplier("  "));
@@ -49,6 +53,7 @@ public class SupplierManagerTest {
 
     @Test
     void getSupplier_existing_returnsSupplier() {
+        // Verify retrieving an existing supplier by ID returns the correct supplier
         manager.addSupplier(supplier1);
         Supplier found = manager.getSupplier(supplier1.getSupplierID());
         assertEquals(supplier1, found);
@@ -56,13 +61,14 @@ public class SupplierManagerTest {
 
     @Test
     void getSupplier_nonExisting_returnsNull() {
+        // Verify retrieving a non-existing supplier ID returns null
         manager.addSupplier(supplier1);
         assertNull(manager.getSupplier("NONEXIST"));
     }
 
     @Test
     void displaySuppliers_printsSuppliers() {
-        // Since displaySuppliers prints to System.out, just test it runs without error
+        // Verify that displaySuppliers runs without throwing exceptions
         manager.addSupplier(supplier1);
         manager.addSupplier(supplier2);
         manager.displaySuppliers();

@@ -40,6 +40,7 @@ public class CustomerOrderServiceTest {
 
     @Test
     void orderFromWarehouse_cancelImmediately_noOrdersAdded() {
+        // Verify no orders added if user cancels immediately
         String input = "cancel\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
@@ -51,6 +52,7 @@ public class CustomerOrderServiceTest {
 
     @Test
     void orderFromWarehouse_completeEmptyOrder_printsMessageAndContinues() {
+        // Verify completing an empty order does not add orders
         String input = "complete\ncancel\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
@@ -62,6 +64,7 @@ public class CustomerOrderServiceTest {
 
     @Test
     void orderFromWarehouse_addProductThenComplete_orderAdded() {
+        // Verify order is added when product is added and order completed
         String input = product.getProductID() + "\n2\ncomplete\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
@@ -73,6 +76,7 @@ public class CustomerOrderServiceTest {
 
     @Test
     void orderFromWarehouse_addProductUpdateQuantityThenComplete_orderAdded() {
+        // Verify order quantity updates before completion and order is added
         String input = product.getProductID() + "\n2\n" + product.getProductID() + "\n5\ncomplete\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
@@ -84,12 +88,13 @@ public class CustomerOrderServiceTest {
 
     @Test
     void orderFromWarehouse_invalidProductID_printsMessageAndContinues() {
+        // Verify invalid product ID input is handled gracefully without crashing
         String input = "invalidID\ncancel\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
 
         CustomerOrderService.orderFromWarehouse(orderManager, inventory, report, supplierManager, scanner);
 
-        // no exception means pass
+        // No exceptions thrown means test passes
     }
 }

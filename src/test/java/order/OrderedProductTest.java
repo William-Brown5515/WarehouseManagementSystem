@@ -21,6 +21,7 @@ public class OrderedProductTest {
 
     @Test
     void testConstructor_andGetters() {
+        // Verify that constructor sets product and quantity correctly, and getters return them
         OrderedProduct orderedProduct = new OrderedProduct(product, 5);
         assertEquals(product, orderedProduct.getProduct());
         assertEquals(5, orderedProduct.getQuantity());
@@ -28,6 +29,7 @@ public class OrderedProductTest {
 
     @Test
     void testSetQuantity_updatesQuantity() {
+        // Verify that setQuantity correctly updates the quantity field
         OrderedProduct orderedProduct = new OrderedProduct(product, 3);
         orderedProduct.setQuantity(10);
         assertEquals(10, orderedProduct.getQuantity());
@@ -35,6 +37,7 @@ public class OrderedProductTest {
 
     @Test
     void testToString_containsProductNameAndQuantity() {
+        // Verify that toString method output contains product name and quantity
         OrderedProduct orderedProduct = new OrderedProduct(product, 2);
         String toString = orderedProduct.toString();
         assertTrue(toString.contains(product.getName()));

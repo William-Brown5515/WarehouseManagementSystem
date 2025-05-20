@@ -14,6 +14,7 @@ public class SupplierOrderServiceTest {
 
     @Test
     public void testOrderFromSuppliers_AddAndCompleteOrder() {
+        // Test adding multiple products to an order from a supplier and completing the order
         System.out.println("Running testOrderFromSuppliers_AddAndCompleteOrder...");
 
         // Setup managers and report

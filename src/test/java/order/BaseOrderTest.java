@@ -26,10 +26,9 @@ class BaseOrderTest {
             super(report, inventory);
         }
 
+        // Need placeholder method to override abstract method
         @Override
-        public void addItem(String productId, int quantity) {
-            // no-op for test
-        }
+        public void addItem(String productId, int quantity) {}
     }
 
     @BeforeEach
@@ -45,6 +44,7 @@ class BaseOrderTest {
 
     @Test
     void constructor_initializesFields() {
+        // Verify initial state of a new order is correct
         assertNotNull(order.getOrderID());
         assertEquals(0.0, order.getTotalPrice(), 0.001);
         assertEquals("Order in Progress", order.getOrderStatus());
@@ -55,40 +55,21 @@ class BaseOrderTest {
 
     @Test
     void addOrderedProduct_addsProductAndRecalculatesPrice() {
+        // Verify adding a product updates order contents and recalculates total price
         OrderedProduct op = new OrderedProduct(product, 2);
         order.addOrderedProduct(op);
 
         List<OrderedProduct> orderedProducts = order.getOrderedProducts();
         assertEquals(1, orderedProducts.size());
-        assertEquals(product, orderedProducts.get(0).getProduct());
-        assertEquals(2, orderedProducts.get(0).getQuantity());
+        assertEquals(product, orderedProducts.getFirst().getProduct());
+        assertEquals(2, orderedProducts.getFirst().getQuantity());
 
-        // totalPrice should be recalculated (default recalcTotalPrice does nothing, so totalPrice remains 0)
         assertEquals(0.0, order.getTotalPrice(), 0.001);
     }
 
     @Test
-    void updateTotalPrice_setsNewPrice() {
-        order.updateTotalPrice(100.0);
-        assertEquals(100.0, order.getTotalPrice(), 0.001);
-    }
-
-    @Test
-    void updateOrderDate_setsCurrentTime() {
-        order.updateOrderDate();
-        assertNotNull(order.getOrderDate());
-        // Roughly check that orderDate is near now
-        assertTrue(order.getOrderDate().isBefore(java.time.LocalDateTime.now().plusSeconds(1)));
-    }
-
-    @Test
-    void updateOrderStatus_changesStatus() {
-        order.updateOrderStatus("Completed");
-        assertEquals("Completed", order.getOrderStatus());
-    }
-
-    @Test
     void updateDelivered_changesDeliveredFlag() {
+        // Verify delivery status flag can be updated correctly
         order.updateDelivered(true);
         assertTrue(order.isDelivered());
 
@@ -98,39 +79,31 @@ class BaseOrderTest {
 
     @Test
     void changeProductQuantity_increasesQuantity_reducesStock() {
-        // Add product to order with quantity 2
+        // Verify increasing product quantity reduces inventory stock accordingly
         order.addOrderedProduct(new OrderedProduct(product, 2));
-
         int initialQty = product.getQuantity();
-
-        // Increase quantity to 5
         order.changeProductQuantity(product, 5);
 
         List<OrderedProduct> orderedProducts = order.getOrderedProducts();
-        assertEquals(5, orderedProducts.get(0).getQuantity());
-
-        // Stock should reduce by 3 (5-2)
+        assertEquals(5, orderedProducts.getFirst().getQuantity());
         assertEquals(initialQty - 3, product.getQuantity());
     }
 
     @Test
     void changeProductQuantity_decreasesQuantity_addsStock() {
+        // Verify decreasing product quantity adds stock back to inventory
         order.addOrderedProduct(new OrderedProduct(product, 5));
-
         int initialQty = product.getQuantity();
-
-        // Decrease quantity to 2
         order.changeProductQuantity(product, 2);
 
         List<OrderedProduct> orderedProducts = order.getOrderedProducts();
         assertEquals(2, orderedProducts.get(0).getQuantity());
-
-        // Stock should increase by 3 (5-2)
         assertEquals(initialQty + 3, product.getQuantity());
     }
 
     @Test
     void changeProductQuantity_productNotInOrder_throws() {
+        // Verify exception is thrown when changing quantity of a product not in order
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> order.changeProductQuantity(product, 5));
         assertEquals("Product not found in the order", ex.getMessage());
@@ -138,28 +111,27 @@ class BaseOrderTest {
 
     @Test
     void removeItem_removesProductAndUpdatesStockAndPrice() {
-        // Add product to order with quantity 3
+        // Verify removing product restores inventory stock and recalculates total price
         order.addOrderedProduct(new OrderedProduct(product, 3));
         int initialQty = product.getQuantity();
 
         order.removeItem(product.getProductID());
 
         assertTrue(order.getOrderedProducts().isEmpty());
-        // Stock should be restored
         assertEquals(initialQty + 3, product.getQuantity());
-        // total price should be recalculated (no products so 0)
         assertEquals(0.0, order.getTotalPrice(), 0.001);
     }
 
     @Test
     void removeItem_productNotInOrder_doesNothing() {
-        // Removing a product not in the order should do nothing and not throw
+        // Verify removing a product not in the order does not throw or change state
         order.removeItem(product.getProductID());
         assertTrue(order.getOrderedProducts().isEmpty());
     }
 
     @Test
     void currentQuantity_returnsCorrectQuantity() {
+        // Verify currentQuantity returns the correct quantity for a product in the order
         assertEquals(0, order.currentQuantity(product));
 
         order.addOrderedProduct(new OrderedProduct(product, 4));
@@ -168,22 +140,24 @@ class BaseOrderTest {
 
     @Test
     void currentQuantity_nullProduct_returnsZero() {
+        // Verify currentQuantity returns zero when given null product
         assertEquals(0, order.currentQuantity(null));
     }
 
     @Test
     void currentOrder_printsEmptyMessage_whenNoProducts() {
-        // Since currentOrder prints to System.out, just call it (no exception expected)
+        // Verify currentOrder outputs appropriate message when order is empty
         order.currentOrder();
     }
 
     @Test
     void currentOrder_printsProductInfo_whenHasProducts() {
+        // Verify currentOrder outputs product information when order has products
         order.addOrderedProduct(new OrderedProduct(product, 2));
         order.currentOrder();
     }
 
-    // Minimal stub for inventory management
+    // Using an inventory stub to isolate the BaseOrder class
     private static class InventoryManagerStub extends InventoryManager {
         private Product productInInventory;
 

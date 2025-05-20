@@ -35,6 +35,7 @@ class BusinessOrderTest {
 
     @Test
     void addItem_throwsIfQuantityZeroOrLess() {
+        // Verify addItem throws if quantity is zero or negative
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> order.addItem(product.getProductID(), 0));
         assertEquals("Quantity must be greater than 0", ex.getMessage());
@@ -46,6 +47,7 @@ class BusinessOrderTest {
 
     @Test
     void addItem_throwsIfProductNotFound() {
+        // Verify addItem throws if product ID not found in inventory
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> order.addItem("invalidId", 1));
         assertTrue(ex.getMessage().contains("Product with id"));
@@ -53,25 +55,28 @@ class BusinessOrderTest {
 
     @Test
     void addItem_addsOrderedProductAndUpdatesTotal() {
+        // Verify addItem adds product and updates total price correctly
         order.addItem(product.getProductID(), 3);
 
         assertEquals(1, order.getOrderedProducts().size());
         OrderedProduct op = order.getOrderedProducts().getFirst();
         assertEquals(product, op.getProduct());
         assertEquals(3, op.getQuantity());
-        assertEquals(15.0, order.getTotalPrice(), 0.001);  // 3 * 5.0 supplier price
+        assertEquals(15.0, order.getTotalPrice(), 0.001);
     }
 
     @Test
     void recalculateTotalPrice_calculatesCorrectly() {
+        // Verify total price calculation after adding multiple ordered products
         order.addOrderedProduct(new OrderedProduct(product, 2));
         order.addOrderedProduct(new OrderedProduct(product, 3));
 
-        assertEquals(25.0, order.getTotalPrice(), 0.001); // 5 * 5.0
+        assertEquals(25.0, order.getTotalPrice(), 0.001);
     }
 
     @Test
     void completeOrder_setsStatusAndDate() {
+        // Verify completeOrder sets order status and date properly
         order.completeOrder();
 
         assertEquals("Paid, being Delivered", order.getOrderStatus());
@@ -80,6 +85,7 @@ class BusinessOrderTest {
 
     @Test
     void deliverOrder_updatesStockAndStatus() {
+        // Verify deliverOrder marks order delivered, updates status, and adds stock back
         order.addItem(product.getProductID(), 2);
 
         int oldQty = product.getQuantity();
@@ -88,19 +94,20 @@ class BusinessOrderTest {
 
         assertTrue(order.isDelivered());
         assertEquals("Delivered", order.getOrderStatus());
-        assertEquals(oldQty + 2, product.getQuantity()); // Stock added back
+        assertEquals(oldQty + 2, product.getQuantity());
     }
 
     @Test
     void isArrived_returnsFalseIfOrderDateNull() {
+        // Verify isArrived returns false if orderDate is null
         assertFalse(order.isArrived());
     }
 
     @Test
     void isArrived_returnsTrueIfOneMinutePassed() {
+        // Verify isArrived returns true if more than one minute has passed since orderDate
         order.completeOrder();
 
-        // Set orderDate to 2 minutes ago (simulating elapsed time)
         LocalDateTime past = LocalDateTime.now().minusMinutes(2);
         order.updateOrderDate(past);
 

@@ -1,5 +1,6 @@
-package main.products;
+package products;
 
+import main.products.ProductTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -30,13 +30,14 @@ public class ProductManagementServiceTest {
 
     @Test
     void createProduct_successfulFlow_addsProduct() {
+        // Test creating a product successfully adds it to inventory
         String input = String.join("\n",
-                "Test Product",      // Product name
-                "10",                // Stock level
-                "20.5",              // Customer price
-                "15.0",              // Supplier price
-                supplier.getSupplierID(), // Supplier ID
-                "1"                  // Product type (first in list)
+                "Test Product",
+                "10",
+                "20.5",
+                "15.0",
+                supplier.getSupplierID(),
+                "1"
         );
         Scanner scanner = new Scanner(new ByteArrayInputStream(input.getBytes()));
 
@@ -54,6 +55,7 @@ public class ProductManagementServiceTest {
 
     @Test
     void createProduct_cancelSupplierSelection_doesNotAddProduct() {
+        // Test cancelling supplier selection prevents product creation
         String input = String.join("\n",
                 "Test Product",
                 "10",
@@ -70,9 +72,10 @@ public class ProductManagementServiceTest {
 
     @Test
     void selectSupplier_validAndInvalidInputs() {
+        // Test supplier selection retries on invalid input then accepts valid input
         String input = String.join("\n",
-                "invalid",            // Invalid ID
-                supplier.getSupplierID()  // Valid ID
+                "invalid",
+                supplier.getSupplierID()
         );
         Scanner scanner = new Scanner(new ByteArrayInputStream(input.getBytes()));
 
@@ -82,6 +85,7 @@ public class ProductManagementServiceTest {
 
     @Test
     void selectSupplier_cancelReturnsNull() {
+        // Test supplier selection returns null when cancelled
         Scanner scanner = new Scanner(new ByteArrayInputStream("cancel\n".getBytes()));
         Supplier selected = ProductManagementService.selectSupplier(supplierManager, scanner);
         assertNull(selected);
@@ -89,11 +93,12 @@ public class ProductManagementServiceTest {
 
     @Test
     void selectProductType_validAndInvalidInputs() {
+        // Test product type selection handles invalid inputs then selects valid type
         String input = String.join("\n",
-                "0",          // invalid (below range)
-                "100",        // invalid (above range)
-                "abc",        // invalid (non-integer)
-                "1"           // valid
+                "0",
+                "100",
+                "abc",
+                "1"
         );
         Scanner scanner = new Scanner(new ByteArrayInputStream(input.getBytes()));
 
@@ -103,6 +108,7 @@ public class ProductManagementServiceTest {
 
     @Test
     void deleteProduct_existingProduct_deletesProduct() {
+        // Test deleting an existing product removes it from inventory
         Product product = new Product("DeleteMe", 5, 10, 7, supplier, ProductTypes.TYPES.get(0));
         inventory.addProduct(product);
 
@@ -119,6 +125,7 @@ public class ProductManagementServiceTest {
 
     @Test
     void deleteProduct_nonExistingProduct_retriesUntilCancel() {
+        // Test deleting a non-existing product retries until cancelled and does not delete
         Product product = new Product("KeepMe", 5, 10, 7, supplier, ProductTypes.TYPES.get(0));
         inventory.addProduct(product);
 
@@ -130,27 +137,27 @@ public class ProductManagementServiceTest {
 
         ProductManagementService.deleteProduct(inventory, scanner);
 
-        // Product still exists since deletion cancelled
         assertEquals(1, inventory.getProducts().size());
     }
 
     @Test
     void modifyProduct_modifyNameAndStockAndPrices() {
+        // Test modifying product details updates product attributes correctly
         Product product = new Product("OldName", 5, 10, 7, supplier, ProductTypes.TYPES.get(0));
         inventory.addProduct(product);
 
         String input = String.join("\n",
                 product.getProductID(),
-                "1",            // Modify name
+                "1",
                 "NewName",
-                "2",            // Modify stock
+                "2",
                 "20",
-                "3",            // Modify customer price
+                "3",
                 "30.5",
-                "4",            // Modify supplier price
+                "4",
                 "25.5",
-                "5",            // Return to menu
-                "cancel"        // Exit outer loop
+                "5",
+                "cancel"
         );
         Scanner scanner = new Scanner(new ByteArrayInputStream(input.getBytes()));
 
@@ -164,6 +171,7 @@ public class ProductManagementServiceTest {
 
     @Test
     void modifyProduct_invalidProductID_andCancel() {
+        // Test modifying product with invalid ID then cancelling does not throw exceptions
         String input = String.join("\n",
                 "invalidID",
                 "cancel"

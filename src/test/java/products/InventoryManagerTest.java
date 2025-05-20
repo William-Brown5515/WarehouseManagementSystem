@@ -105,6 +105,7 @@ public class InventoryManagerTest {
 
     @Test
     void testLowStock_returnsCorrectProducts() {
+        // product2 has low stock (15), product1 has plenty (50)
         List<Product> lowStock = inventory.lowStock();
         assertTrue(lowStock.contains(product2));
         assertFalse(lowStock.contains(product1));
