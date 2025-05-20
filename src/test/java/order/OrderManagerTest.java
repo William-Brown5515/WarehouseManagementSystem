@@ -1,6 +1,7 @@
+package order;
+
 import main.financial.FinancialReport;
 import main.order.*;
-import main.order.OrderedProduct;
 import main.products.InventoryManager;
 import main.products.Product;
 import main.products.ProductTypes;
@@ -10,8 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,89 +25,119 @@ class OrderManagerTest {
     }
 
     @Test
-    void testAddOrder() {
-        BusinessOrder order = new BusinessOrder(new FinancialReport(), new InventoryManager()) {
-            @Override
-            public Boolean isArrived() {
-                return true;
-            }
+    void testOrderManager() {
+        // Verify that a new OrderManager initializes with an empty orders list
+        orderManager = new OrderManager();
+        assertTrue(orderManager.getOrders().isEmpty());
+    }
 
-            @Override
-            public boolean isDelivered() {
-                return false;
-            }
-        };
+    @Test
+    void testAddOrder() {
+        // Ensure addOrder properly adds a BusinessOrder to the orders list
+        BusinessOrder order = new BusinessOrder(new FinancialReport(), new InventoryManager());
 
         OrderManager manager = new OrderManager();
         manager.addOrder(order);
 
-        List<BusinessOrder> arrivedOrders = manager.updateArrivalStatus();
-        assertTrue(arrivedOrders.contains(order));
+        assertTrue(manager.getOrders().contains(order));
     }
 
     @Test
-    void testDisplayBusinessOrders_printsCorrectly() {
+    void testAddOrder_nullThrows() {
+        // Verify that adding a null order throws IllegalArgumentException
+        assertThrows(IllegalArgumentException.class, () -> new OrderManager().addOrder(null));
+    }
+
+    @Test
+    void testDisplayBusinessOrders() {
+        // Check that displayBusinessOrders prints details of business orders correctly
         OrderManager manager = getOrderManagerForBusiness();
 
-        // Capture the system output
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PrintStream originalOut = System.out;
         System.setOut(new PrintStream(outputStream));
 
         manager.displayBusinessOrders();
         System.setOut(originalOut);
-        String output = outputStream.toString();
 
+        String output = outputStream.toString();
         assertTrue(output.contains("Order ID:"));
         assertTrue(output.contains("Order Status:"));
         assertTrue(output.contains("Product name: TestProduct"));
         assertTrue(output.contains("Quantity: 5"));
     }
 
-    private static OrderManager getOrderManagerForBusiness() {
+    @Test
+    void testDisplayBusinessOrders_emptyOrder() {
+        // Ensure no output is printed when there are no business orders
         OrderManager manager = new OrderManager();
-        Supplier supplier = new Supplier("Test Supplier", "test@email.com", "00000000000");
-        InventoryManager inventory = new InventoryManager();
-        BusinessOrder order = new BusinessOrder(
-                new FinancialReport(),
-                inventory
-        );
 
-        manager.addOrder(order);
-        Product product = new Product("TestProduct", 10, 6.0, 10.0, supplier, ProductTypes.CONSTRUCTION_MATERIAL);
-        inventory.addProduct(product);
-        order.addItem(product.getProductID(), 5);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outputStream));
 
-        return manager;
+        manager.displayBusinessOrders();
+        System.setOut(originalOut);
+
+        String output = outputStream.toString();
+        assertTrue(output.isEmpty(), "Expected no output when no business orders");
     }
 
     @Test
-    void testDisplayCustomerOrders_printsCorrectly() {
+    void testDisplayCustomerOrders() {
+        // Check that displayCustomerOrders prints details of customer orders correctly
         OrderManager manager = getOrderManagerForCustomer();
 
-        // Capture the system output
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PrintStream originalOut = System.out;
         System.setOut(new PrintStream(outputStream));
 
         manager.displayCustomerOrders();
         System.setOut(originalOut);
-        String output = outputStream.toString();
 
+        String output = outputStream.toString();
         assertTrue(output.contains("Order ID:"));
         assertTrue(output.contains("Order Status:"));
         assertTrue(output.contains("Product name: TestProduct"));
         assertTrue(output.contains("Quantity: 5"));
     }
 
-    private static OrderManager getOrderManagerForCustomer() {
+    @Test
+    void testDisplayCustomerOrders_emptyOrder() {
+        // Ensure no output is printed when there are no customer orders
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outputStream));
+
+        orderManager.displayCustomerOrders();
+
+        System.setOut(originalOut);
+
+        String output = outputStream.toString();
+        assertTrue(output.isEmpty(), "Expected no output when no customer orders");
+    }
+
+    private static OrderManager getOrderManagerForBusiness() {
+        // Create an OrderManager with one BusinessOrder containing one product with quantity 5
         OrderManager manager = new OrderManager();
         Supplier supplier = new Supplier("Test Supplier", "test@email.com", "00000000000");
         InventoryManager inventory = new InventoryManager();
-        CustomerOrder order = new CustomerOrder(
-                new FinancialReport(),
-                inventory
-        );
+        BusinessOrder order = new BusinessOrder(new FinancialReport(), inventory);
+
+        manager.addOrder(order);
+        Product product = new Product("TestProduct", 10, 6.0, 10.0, supplier, ProductTypes.CONSTRUCTION_MATERIAL);
+        inventory.addProduct(product);
+        order.addItem(product.getProductID(), 5);
+
+        return manager;
+    }
+
+    private static OrderManager getOrderManagerForCustomer() {
+        // Create an OrderManager with one CustomerOrder containing one product with quantity 5
+        OrderManager manager = new OrderManager();
+        Supplier supplier = new Supplier("Test Supplier", "test@email.com", "00000000000");
+        InventoryManager inventory = new InventoryManager();
+        CustomerOrder order = new CustomerOrder(new FinancialReport(), inventory);
 
         manager.addOrder(order);
         Product product = new Product("TestProduct", 10, 6.0, 10.0, supplier, ProductTypes.CONSTRUCTION_MATERIAL);
@@ -119,13 +148,11 @@ class OrderManagerTest {
     }
 
     @Test
-    void testUpdateArrivalStatus_returnsOnlyArrivedAndUndeliveredBusinessOrders() {
+    void testUpdateArrivalStatus() {
+        // Verify that updateArrivalStatus returns only arrived and not delivered orders
         OrderManager manager = new OrderManager();
-
-        Supplier supplier = new Supplier("Test Supplier", "test@email.com", "00000000000");
         InventoryManager inventory = new InventoryManager();
 
-        // Order 1: Arrived and not delivered - should be included
         BusinessOrder order1 = new BusinessOrder(new FinancialReport(), inventory) {
             @Override
             public Boolean isArrived() { return true; }
@@ -133,7 +160,6 @@ class OrderManagerTest {
             public boolean isDelivered() { return false; }
         };
 
-        // Order 2: Arrived and delivered - should NOT be included
         BusinessOrder order2 = new BusinessOrder(new FinancialReport(), inventory) {
             @Override
             public Boolean isArrived() { return true; }
@@ -141,7 +167,6 @@ class OrderManagerTest {
             public boolean isDelivered() { return true; }
         };
 
-        // Order 3: Not arrived - should NOT be included
         BusinessOrder order3 = new BusinessOrder(new FinancialReport(), inventory) {
             @Override
             public Boolean isArrived() { return false; }

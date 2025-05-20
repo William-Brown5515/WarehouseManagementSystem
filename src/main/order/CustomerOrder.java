@@ -11,7 +11,7 @@ public class CustomerOrder extends BaseOrder {
     }
 
     @Override
-    protected void recalculateTotalPrice() {
+    public void recalculateTotalPrice() {
         // Cycle through each ordered product and add the prices to the total
         double newTotal = 0.0;
         for (OrderedProduct orderedProduct : getOrderedProducts()) {

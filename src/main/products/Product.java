@@ -49,6 +49,7 @@ public class Product {
     public double getCustomerPrice() { return customerPrice; }
     public double getSupplierPrice() { return supplierPrice; }
     public Supplier getSupplier() { return supplier; }
+    public String getType() { return type; }
 
     // Class setters, with exceptions to ensure the parameters match the requirements
     public void setName(String newName) {

@@ -11,6 +11,8 @@ public class OrderManager {
         this.orders = new ArrayList<>();
     }
 
+    public List<BaseOrder> getOrders() { return orders; }
+
     public void addOrder(BaseOrder order) {
         // Ensure the parameter is not null, then add to the list
         if (order == null) {

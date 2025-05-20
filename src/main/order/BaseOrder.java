@@ -73,7 +73,7 @@ public abstract class BaseOrder {
     }
 
     // A method to add a product to an order
-    protected void addOrderedProduct(OrderedProduct newProduct) {
+    public void addOrderedProduct(OrderedProduct newProduct) {
         // Ensure the product exists
         if (newProduct == null) {
             throw new IllegalArgumentException("Product cannot be null");
@@ -145,6 +145,11 @@ public abstract class BaseOrder {
         }
         // Returns 0 if product not found
         return 0;
+    }
+
+    // Overloaded method to set a custom order date (useful for testing)
+    public void updateOrderDate(LocalDateTime customDate) {
+        orderDate = customDate;
     }
 
     // Placeholders to utilise polymorphism

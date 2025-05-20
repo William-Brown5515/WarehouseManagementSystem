@@ -14,6 +14,8 @@ public class InventoryManager {
         this.products = new ArrayList<>();
     }
 
+    public List <Product> getProducts() { return products; }
+
     // A method to add a new product to the List
     public void addProduct(Product product) {
         // Ensure the product exists

@@ -1,7 +1,6 @@
 package main.financial;
 
 public class FinancialReport {
-    private double currentMoney = 150000.0;
     private double salesRevenue = 0.0;
     private double purchaseCosts = 0.0;
 
@@ -12,7 +11,6 @@ public class FinancialReport {
         }
 
         purchaseCosts += cost;
-        currentMoney -= cost;
     }
 
     public void orderRevenue(double revenue) {
@@ -21,7 +19,6 @@ public class FinancialReport {
             throw new IllegalArgumentException("Revenue cannot be negative.");
         }
         salesRevenue += revenue;
-        currentMoney += revenue;
     }
 
     public double getNetIncome() {

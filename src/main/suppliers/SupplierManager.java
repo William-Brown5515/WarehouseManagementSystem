@@ -12,6 +12,8 @@ public class SupplierManager {
         suppliers = new ArrayList<>();
     }
 
+    public List<Supplier> getSuppliers() { return suppliers; }
+
     // A method to add a new supplier, features null verification
     public void addSupplier(Supplier supplier) {
         if (supplier == null) {
