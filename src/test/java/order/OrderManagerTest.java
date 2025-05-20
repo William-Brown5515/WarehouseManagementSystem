@@ -1,6 +1,7 @@
+package order;
+
 import main.financial.FinancialReport;
 import main.order.*;
-import main.order.OrderedProduct;
 import main.products.InventoryManager;
 import main.products.Product;
 import main.products.ProductTypes;
@@ -10,8 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,28 +25,32 @@ class OrderManagerTest {
     }
 
     @Test
-    void testAddOrder() {
-        BusinessOrder order = new BusinessOrder(new FinancialReport(), new InventoryManager()) {
-            @Override
-            public Boolean isArrived() {
-                return true;
-            }
+    void testOrderManager() {
+        // Test that the order manager creates an empty array on instantiation
+        orderManager = new OrderManager();
+        assertTrue(orderManager.getOrders().isEmpty());
+    }
 
-            @Override
-            public boolean isDelivered() {
-                return false;
-            }
-        };
+    @Test
+    void testAddOrder() {
+        // Ensure an order is added to the order manager in addOrder
+        BusinessOrder order = new BusinessOrder(new FinancialReport(), new InventoryManager());
 
         OrderManager manager = new OrderManager();
         manager.addOrder(order);
 
-        List<BusinessOrder> arrivedOrders = manager.updateArrivalStatus();
-        assertTrue(arrivedOrders.contains(order));
+        assertTrue(manager.getOrders().contains(order));
     }
 
     @Test
-    void testDisplayBusinessOrders_printsCorrectly() {
+    void testAddOrder_nullThrows() {
+        // Ensure trying to add a null order result in a relevant exception
+        assertThrows(IllegalArgumentException.class, () -> new OrderManager().addOrder(null));
+    }
+
+    @Test
+    void testDisplayBusinessOrders() {
+        // Ensure business orders are collected correctly
         OrderManager manager = getOrderManagerForBusiness();
 
         // Capture the system output
@@ -65,25 +68,24 @@ class OrderManagerTest {
         assertTrue(output.contains("Quantity: 5"));
     }
 
-    private static OrderManager getOrderManagerForBusiness() {
+    @Test
+    void testDisplayBusinessOrders_emptyOrder() {
+        // Ensure output is blank when there are no orders
         OrderManager manager = new OrderManager();
-        Supplier supplier = new Supplier("Test Supplier", "test@email.com", "00000000000");
-        InventoryManager inventory = new InventoryManager();
-        BusinessOrder order = new BusinessOrder(
-                new FinancialReport(),
-                inventory
-        );
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outputStream));
 
-        manager.addOrder(order);
-        Product product = new Product("TestProduct", 10, 6.0, 10.0, supplier, ProductTypes.CONSTRUCTION_MATERIAL);
-        inventory.addProduct(product);
-        order.addItem(product.getProductID(), 5);
+        manager.displayBusinessOrders();
+        System.setOut(originalOut);
 
-        return manager;
+        String output = outputStream.toString();
+        assertTrue(output.isEmpty(), "Expected no output when no business orders");
     }
 
     @Test
-    void testDisplayCustomerOrders_printsCorrectly() {
+    void testDisplayCustomerOrders() {
+        // Ensure customer orders are collected correctly
         OrderManager manager = getOrderManagerForCustomer();
 
         // Capture the system output
@@ -101,7 +103,46 @@ class OrderManagerTest {
         assertTrue(output.contains("Quantity: 5"));
     }
 
+    @Test
+    void testDisplayCustomerOrders_emptyOrder() {
+        // Ensure output is blank when there are no orders
+
+        // Capture system output
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outputStream));
+
+        // Run the method on an empty OrderManager (orders list is empty by default)
+        orderManager.displayCustomerOrders();
+
+        // Restore original System.out
+        System.setOut(originalOut);
+
+        // Check that nothing was printed
+        String output = outputStream.toString();
+        assertTrue(output.isEmpty(), "Expected no output when no customer orders");
+    }
+
+    private static OrderManager getOrderManagerForBusiness() {
+        // Create an order manager and insert test values
+        OrderManager manager = new OrderManager();
+        Supplier supplier = new Supplier("Test Supplier", "test@email.com", "00000000000");
+        InventoryManager inventory = new InventoryManager();
+        BusinessOrder order = new BusinessOrder(
+                new FinancialReport(),
+                inventory
+        );
+
+        manager.addOrder(order);
+        Product product = new Product("TestProduct", 10, 6.0, 10.0, supplier, ProductTypes.CONSTRUCTION_MATERIAL);
+        inventory.addProduct(product);
+        order.addItem(product.getProductID(), 5);
+
+        return manager;
+    }
+
     private static OrderManager getOrderManagerForCustomer() {
+        // Create an order manager and insert test values
         OrderManager manager = new OrderManager();
         Supplier supplier = new Supplier("Test Supplier", "test@email.com", "00000000000");
         InventoryManager inventory = new InventoryManager();
@@ -119,10 +160,9 @@ class OrderManagerTest {
     }
 
     @Test
-    void testUpdateArrivalStatus_returnsOnlyArrivedAndUndeliveredBusinessOrders() {
+    void testUpdateArrivalStatus() {
+        // Ensure that only orders that have arrived, and not delivered, are displayed
         OrderManager manager = new OrderManager();
-
-        Supplier supplier = new Supplier("Test Supplier", "test@email.com", "00000000000");
         InventoryManager inventory = new InventoryManager();
 
         // Order 1: Arrived and not delivered - should be included
