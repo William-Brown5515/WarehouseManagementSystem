@@ -34,7 +34,9 @@ class OrderManagerTest {
     @Test
     void testAddOrder() {
         // Ensure addOrder properly adds a BusinessOrder to the orders list
-        BusinessOrder order = new BusinessOrder(new FinancialReport(), new InventoryManager());
+        Supplier supplier = new Supplier("Test Supplier", "test@example.com", "1234567890");
+
+        BusinessOrder order = new BusinessOrder(new FinancialReport(), new InventoryManager(), supplier);
 
         OrderManager manager = new OrderManager();
         manager.addOrder(order);
@@ -122,7 +124,7 @@ class OrderManagerTest {
         OrderManager manager = new OrderManager();
         Supplier supplier = new Supplier("Test Supplier", "test@email.com", "00000000000");
         InventoryManager inventory = new InventoryManager();
-        BusinessOrder order = new BusinessOrder(new FinancialReport(), inventory);
+        BusinessOrder order = new BusinessOrder(new FinancialReport(), inventory, supplier);
 
         manager.addOrder(order);
         Product product = new Product("TestProduct", 10, 6.0, 10.0, supplier, ProductTypes.CONSTRUCTION_MATERIAL);
@@ -152,22 +154,25 @@ class OrderManagerTest {
         // Verify that updateArrivalStatus returns only arrived and not delivered orders
         OrderManager manager = new OrderManager();
         InventoryManager inventory = new InventoryManager();
+        Supplier supplier = new Supplier("Test Supplier", "test@example.com", "1234567890");
 
-        BusinessOrder order1 = new BusinessOrder(new FinancialReport(), inventory) {
+
+
+        BusinessOrder order1 = new BusinessOrder(new FinancialReport(), inventory, supplier) {
             @Override
             public Boolean isArrived() { return true; }
             @Override
             public boolean isDelivered() { return false; }
         };
 
-        BusinessOrder order2 = new BusinessOrder(new FinancialReport(), inventory) {
+        BusinessOrder order2 = new BusinessOrder(new FinancialReport(), inventory, supplier) {
             @Override
             public Boolean isArrived() { return true; }
             @Override
             public boolean isDelivered() { return true; }
         };
 
-        BusinessOrder order3 = new BusinessOrder(new FinancialReport(), inventory) {
+        BusinessOrder order3 = new BusinessOrder(new FinancialReport(), inventory, supplier) {
             @Override
             public Boolean isArrived() { return false; }
             @Override

@@ -153,7 +153,8 @@ public class Main {
             System.out.println("2. Add a Supplier");
             System.out.println("3. Delete a Supplier");
             System.out.println("4. Modify Supplier Details");
-            System.out.println("5. Back to Owner Menu");
+            System.out.println("5. View Orders from a Supplier");
+            System.out.println("6. Back to Owner Menu");
             System.out.print("Enter choice: ");
 
             switch (scanner.nextLine().trim()) {
@@ -170,6 +171,9 @@ public class Main {
                     SupplierManagementService.modifySupplier(supplierManager, scanner);
                     break;
                 case "5":
+                    SupplierManagementService.getSupplierOrders(supplierManager, scanner, orderManager);
+                    break;
+                case "6":
                     supplierRunning = false;
                     break;
                 default:

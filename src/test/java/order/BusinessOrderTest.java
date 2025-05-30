@@ -26,9 +26,9 @@ class BusinessOrderTest {
     void setup() {
         inventory = new InventoryManagerStub();
         FinancialReport report = new FinancialReport();
-        order = new BusinessOrder(report, inventory);
 
         Supplier supplier = new Supplier("Test Supplier", "test@example.com", "1234567890");
+        order = new BusinessOrder(report, inventory, supplier);
         product = new Product("Test Product", 10, 8.0, 5.0, supplier, ProductTypes.CONSTRUCTION_MATERIAL);
         inventory.addProduct(product);
     }

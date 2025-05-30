@@ -25,7 +25,7 @@ public class SupplierOrderService {
             return;
         }
 
-        BusinessOrder order = new BusinessOrder(report, inventory);
+        BusinessOrder order = new BusinessOrder(report, inventory, supplier);
 
         while (true) {
             // Display products from selected supplier

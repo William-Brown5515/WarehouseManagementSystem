@@ -1,8 +1,11 @@
 package main.UI;
 
+import main.order.BusinessOrder;
+import main.order.OrderManager;
 import main.suppliers.Supplier;
 import main.suppliers.SupplierManager;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class SupplierManagementService {
@@ -99,6 +102,34 @@ public class SupplierManagementService {
                     }
                 }
                 return; // Exit after modifying one supplier
+            } else {
+                System.out.println("No supplier found with that ID. Please try again.");
+            }
+        }
+    }
+
+    // Handles deleting a supplier by ID
+    public static void getSupplierOrders(SupplierManager supplierManager, Scanner scanner, OrderManager orderManager) {
+        supplierManager.displaySuppliers();
+
+        while (true) {
+            System.out.println("Enter Supplier ID (or type 'cancel' to exit): ");
+            String supplierID = scanner.nextLine().trim();
+
+            if (supplierID.equalsIgnoreCase("cancel")) return;
+
+            // Attempt to fetch supplier
+            Supplier supplier = supplierManager.getSupplier(supplierID);
+            if (supplier != null) {
+                List<BusinessOrder> orders = orderManager.getOrderBySupplier(supplier);
+                if (orders.isEmpty()) {
+                    System.out.println("No orders found with that supplier.");
+                } else {
+                    for (BusinessOrder order : orders) {
+                        System.out.println(order.toString());
+                    }
+                }
+                return; // Exit after successful deletion
             } else {
                 System.out.println("No supplier found with that ID. Please try again.");
             }
