@@ -2,6 +2,7 @@ package main.UI;
 
 import main.order.BusinessOrder;
 import main.order.OrderManager;
+import main.order.OrderedProduct;
 import main.suppliers.Supplier;
 import main.suppliers.SupplierManager;
 
@@ -126,7 +127,11 @@ public class SupplierManagementService {
                     System.out.println("No orders found with that supplier.");
                 } else {
                     for (BusinessOrder order : orders) {
-                        System.out.println(order.toString());
+                        System.out.println("-----Start of Order-----");
+                        for (OrderedProduct orderedProduct : order.getOrderedProducts()) {
+                            System.out.println("Product: " + orderedProduct.getProduct().getName() + " Quantity: " + orderedProduct.getQuantity());
+                        }
+                        System.out.println("-----End of Order-----");
                     }
                 }
                 return; // Exit after successful deletion
