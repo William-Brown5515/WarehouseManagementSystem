@@ -1,5 +1,7 @@
 package main.order;
 
+import main.suppliers.Supplier;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,5 +65,16 @@ public class OrderManager {
             }
         }
         return arrivalOrders;
+    }
+
+    public List<BusinessOrder> getOrderBySupplier(Supplier supplier) {
+        List<BusinessOrder> supplierOrders = new ArrayList<>();
+        for (BaseOrder order : orders) {
+            if (order instanceof BusinessOrder businessOrder &&
+                    businessOrder.supplier.equals(supplier)) {
+                supplierOrders.add(businessOrder);
+            }
+        }
+        return supplierOrders;
     }
 }

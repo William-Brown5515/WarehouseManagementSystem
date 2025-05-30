@@ -3,13 +3,17 @@ package main.order;
 import main.products.InventoryManager;
 import main.financial.FinancialReport;
 import main.products.Product;
+import main.suppliers.Supplier;
 
 import java.time.LocalDateTime;
 
 public class BusinessOrder extends BaseOrder {
 
-    public BusinessOrder(FinancialReport report, InventoryManager inventory) {
+    Supplier supplier;
+
+    public BusinessOrder(FinancialReport report, InventoryManager inventory, Supplier supplier) {
         super(report, inventory);
+        this.supplier = supplier;
     }
 
     @Override
